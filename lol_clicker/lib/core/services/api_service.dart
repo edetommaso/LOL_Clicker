@@ -28,12 +28,13 @@ class ApiService {
       throw Exception('Erreur serveur: ${response.statusCode}');
     }
   }
-
+  
   /*
   * Fonction qui permet de gérer les requêtes POST
   */
+  
   Future<dynamic> postRequest(String fichierPhp, Map<String, dynamic> data) async {
-    Uri url = Uri.parse('$baseUrl/$fichierPhp');
+    Uri url = Uri.parse('$baseUrl//$fichierPhp');
 
     final response = await http.post(
       url,

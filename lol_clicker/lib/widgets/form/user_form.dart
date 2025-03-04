@@ -6,9 +6,9 @@ import '../../viewmodels/user_viewmodel.dart';
 class UserForm extends StatefulWidget {
   final UserViewModel viewModel;
   final UserModel? user;
-
+  
   const UserForm({super.key, required this.viewModel, this.user});
-
+  
   @override
   UserFormState createState() => UserFormState();
 }
@@ -25,7 +25,7 @@ class UserFormState extends State<UserForm> {
     lastnameController = TextEditingController(text: widget.user?.lastname ?? '');
     selectedDate = widget.user != null ? DateTime.parse(widget.user!.birthdate) : null;
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
