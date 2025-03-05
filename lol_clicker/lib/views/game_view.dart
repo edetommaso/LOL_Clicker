@@ -11,10 +11,42 @@ class GameView extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => GameViewModel(),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Monstre Clicker'),
+        // Supprimer l'AppBar par défaut
+        appBar: null,
+        body: Column(
+          children: [
+            // Header personnalisé avec logo et titre
+            Container(
+              padding: const EdgeInsets.all(16),
+              color: Colors.deepPurple, // Couleur de fond du header
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Logo (remplacez par votre propre image)
+                  Image.asset(
+                    'assets/logo.png', // Chemin vers votre logo
+                    width: 50, // Taille du logo
+                    height: 50,
+                  ),
+                  const SizedBox(width: 10), // Espacement entre le logo et le titre
+                  // Titre "League of Clicker"
+                  const Text(
+                    'League of Clicker',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white, // Couleur du texte
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Corps de la page (le jeu)
+            const Expanded(
+              child: GameBody(),
+            ),
+          ],
         ),
-        body: const GameBody(),
       ),
     );
   }
@@ -68,6 +100,16 @@ class GameBody extends StatelessWidget {
             'Dégâts infligés: ${gameViewModel.lastDamage}',
             style: const TextStyle(fontSize: 20),
           ),
+
+          // Message temporaire lors du spawn d'un nouvel ennemi
+          if (gameViewModel.lastDamage == 0 && enemy.currentLife == enemy.totalLife)
+            const Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Text(
+                'Nouveau monstre !',
+                style: TextStyle(fontSize: 20, color: Colors.green),
+              ),
+            ),
         ],
       ),
     );
