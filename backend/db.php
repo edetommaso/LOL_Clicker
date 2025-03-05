@@ -1,8 +1,8 @@
 <?php
 
-    $dns = 'mysql:host=localhost;dbname=test';
+    $dns = 'mysql:host=localhost;dbname=lol_clicker';
     $user = 'root';
-    $password = 'Azerty123_Mdp';
+    $password = '';
 
     try {
         $db = new PDO($dns, $user, $password);

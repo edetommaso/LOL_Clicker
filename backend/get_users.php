@@ -1,5 +1,8 @@
 <?php
 	require_once('db.php');
+	header("Access-Control-Allow-Origin: *");
+	header("Access-Control-Allow-Methods: GET");
+	header("Access-Control-Allow-Headers: Content-Type, Accept");
 
 	$query = 'SELECT * FROM users WHERE 1=1';
 	$params = [];
@@ -27,5 +30,5 @@
 	$statement = $db->prepare($query);
 	$statement->execute($params);
 	$rows = $statement->fetchAll(PDO::FETCH_ASSOC);
-
+	
 	echo json_encode($rows);
