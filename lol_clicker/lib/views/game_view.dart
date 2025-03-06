@@ -25,8 +25,8 @@ class GameView extends StatelessWidget {
                   // Logo (remplacez par votre propre image)
                   Image.asset(
                     'assets/logo.png', // Chemin vers votre logo
-                    width: 50, // Taille du logo
-                    height: 50,
+                    width: 100, // Taille du logo
+                    height: 100,
                   ),
                   const SizedBox(width: 10), // Espacement entre le logo et le titre
                   // Titre "League of Clicker"
