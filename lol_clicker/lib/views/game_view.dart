@@ -11,31 +11,28 @@ class GameView extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => GameViewModel(),
       child: Scaffold(
-        // Supprimer l'AppBar par défaut
         appBar: null,
         body: Column(
           children: [
             // Header personnalisé avec logo et titre
             Container(
               padding: const EdgeInsets.all(16),
-              color: Colors.deepPurple, // Couleur de fond du header
+              color: Colors.deepPurple,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Logo (remplacez par votre propre image)
                   Image.asset(
-                    'assets/logo.png', // Chemin vers votre logo
-                    width: 100, // Taille du logo
-                    height: 100,
+                    'assets/logo.png',
+                    width: 50,
+                    height: 50,
                   ),
-                  const SizedBox(width: 10), // Espacement entre le logo et le titre
-                  // Titre "League of Clicker"
+                  const SizedBox(width: 10),
                   const Text(
                     'League of Clicker',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white, // Couleur du texte
+                      color: Colors.white,
                     ),
                   ),
                 ],
@@ -64,22 +61,29 @@ class GameBody extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Image du monstre centrée et plus grande
+          // Compteur de monstres tués en haut de l'image
+          Text(
+            'Monstres tués: ${gameViewModel.monstersKilled}/10',
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 20),
+
+          // Image du monstre
           GestureDetector(
             onTap: () {
               gameViewModel.attackEnemy();
             },
             child: Image.asset(
               'assets/monster.png',
-              width: 300, // Taille de l'image augmentée
+              width: 300,
               height: 300,
             ),
           ),
           const SizedBox(height: 20),
 
-          // Barre de vie centrée et de largeur réduite
+          // Barre de vie
           Container(
-            width: 300, // Largeur réduite de la barre de vie
+            width: 300,
             child: LinearProgressIndicator(
               value: enemy.currentLife / enemy.totalLife,
               backgroundColor: Colors.grey,
@@ -88,7 +92,7 @@ class GameBody extends StatelessWidget {
           ),
           const SizedBox(height: 10),
 
-          // Affichage du niveau et des PV en dessous de la barre de vie
+          // Affichage du niveau et des PV
           Text(
             'Niveau: ${enemy.level} | PV: ${enemy.currentLife}/${enemy.totalLife}',
             style: const TextStyle(fontSize: 24),
