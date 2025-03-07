@@ -1,46 +1,76 @@
+// lib/views/game_view.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/ennemy_model.dart';
 import '../viewmodels/game_viewmodel.dart';
+import '../viewmodels/shop_viewmodel.dart';
+import '../widgets/shop_button.dart';
+import '../widgets/shop_panel.dart';
 
-class GameView extends StatelessWidget {
+class GameView extends StatefulWidget {
   const GameView({super.key});
 
   @override
+  State<GameView> createState() => _GameViewState();
+}
+
+class _GameViewState extends State<GameView> {
+  bool _isShopOpen = false;
+
+  void _toggleShop() {
+    setState(() {
+      _isShopOpen = !_isShopOpen;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => GameViewModel(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => GameViewModel()),
+        ChangeNotifierProvider(create: (context) => ShopViewModel()),
+      ],
       child: Scaffold(
         appBar: null,
-        body: Column(
+        body: Stack(
           children: [
-            // Header personnalisé avec logo et titre
-            Container(
-              padding: const EdgeInsets.all(16),
-              color: Colors.deepPurple,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/logo.png',
-                    width: 50,
-                    height: 50,
-                  ),
-                  const SizedBox(width: 10),
-                  const Text(
-                    'League of Clicker',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            ),
             // Corps de la page (le jeu)
-            const Expanded(
-              child: GameBody(),
+            Column(
+              children: [
+                // Header personnalisé avec logo et titre
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  color: Colors.deepPurple,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/logo.png',
+                        width: 50,
+                        height: 50,
+                      ),
+                      const SizedBox(width: 10),
+                      const Text(
+                        'League of Clicker',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Expanded(
+                  child: GameBody(),
+                ),
+              ],
+            ),
+            // Bouton du shop
+            ShopButton(onPressed: _toggleShop),
+            // Panneau du shop
+            ShopPanel(
+              isShopOpen: _isShopOpen,
+              onClose: _toggleShop,
             ),
           ],
         ),
@@ -48,7 +78,7 @@ class GameView extends StatelessWidget {
     );
   }
 }
-
+// lib/views/game_view.dart (extrait de GameBody)
 class GameBody extends StatelessWidget {
   const GameBody({super.key});
 
@@ -61,7 +91,7 @@ class GameBody extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Compteur de monstres tués en haut de l'image
+          // Compteur de monstres tués
           Text(
             'Monstres tués: ${gameViewModel.monstersKilled}/10',
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -86,8 +116,8 @@ class GameBody extends StatelessWidget {
             width: 300,
             child: LinearProgressIndicator(
               value: enemy.currentLife / enemy.totalLife,
-              backgroundColor: Colors.grey,
-              color: Colors.red,
+              backgroundColor: Colors.red,
+              color: Colors.green,
             ),
           ),
           const SizedBox(height: 10),
@@ -104,16 +134,6 @@ class GameBody extends StatelessWidget {
             'Dégâts infligés: ${gameViewModel.lastDamage}',
             style: const TextStyle(fontSize: 20),
           ),
-
-          // Message temporaire lors du spawn d'un nouvel ennemi
-          if (gameViewModel.lastDamage == 0 && enemy.currentLife == enemy.totalLife)
-            const Padding(
-              padding: EdgeInsets.only(top: 20),
-              child: Text(
-                'Nouveau monstre !',
-                style: TextStyle(fontSize: 20, color: Colors.green),
-              ),
-            ),
         ],
       ),
     );
