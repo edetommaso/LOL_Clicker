@@ -23,8 +23,8 @@ class GameView extends StatelessWidget {
                 children: [
                   Image.asset(
                     'assets/logo.png',
-                    width: 50,
-                    height: 50,
+                    width: 150,
+                    height: 100,
                   ),
                   const SizedBox(width: 10),
                   const Text(
