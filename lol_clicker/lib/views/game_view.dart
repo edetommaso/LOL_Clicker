@@ -5,6 +5,8 @@ import '../viewmodels/game_viewmodel.dart';
 import '../viewmodels/shop_viewmodel.dart';
 import '../widgets/shop_button.dart';
 import '../widgets/shop_panel.dart';
+import '../widgets/coin_display.dart';
+import 'game_body.dart'; // Importer GameBody depuis le fichier séparé
 
 class GameView extends StatefulWidget {
   const GameView({super.key});
@@ -54,14 +56,14 @@ class _GameViewState extends State<GameView> {
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey,
+                          color: Colors.white,
                         ),
                       ),
                     ],
                   ),
                 ),
                 const Expanded(
-                  child: GameBody(),
+                  child: GameBody(), // Utilisation de GameBody
                 ),
               ],
             ),
@@ -72,69 +74,18 @@ class _GameViewState extends State<GameView> {
               isShopOpen: _isShopOpen,
               onClose: _toggleShop,
             ),
+            // Affichage du solde de pièces en bas à gauche
+            Positioned(
+              left: 16,
+              bottom: 16,
+              child: Consumer<GameViewModel>(
+                builder: (context, gameViewModel, child) {
+                  return CoinDisplay(coins: gameViewModel.coins);
+                },
+              ),
+            ),
           ],
         ),
-      ),
-    );
-  }
-}
-// lib/views/game_view.dart (extrait de GameBody)
-class GameBody extends StatelessWidget {
-  const GameBody({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final gameViewModel = Provider.of<GameViewModel>(context);
-    final enemy = gameViewModel.enemy;
-
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Compteur de monstres tués
-          Text(
-            'Monstres tués: ${gameViewModel.monstersKilled}/10',
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 20),
-
-          // Image du monstre
-          GestureDetector(
-            onTap: () {
-              gameViewModel.attackEnemy();
-            },
-            child: Image.asset(
-              'assets/monster.png',
-              width: 300,
-              height: 300,
-            ),
-          ),
-          const SizedBox(height: 20),
-
-          // Barre de vie
-          Container(
-            width: 300,
-            child: LinearProgressIndicator(
-              value: enemy.currentLife / enemy.totalLife,
-              backgroundColor: Colors.red,
-              color: Colors.green,
-            ),
-          ),
-          const SizedBox(height: 10),
-
-          // Affichage du niveau et des PV
-          Text(
-            'Niveau: ${enemy.level} | PV: ${enemy.currentLife}/${enemy.totalLife}',
-            style: const TextStyle(fontSize: 24),
-          ),
-          const SizedBox(height: 20),
-
-          // Affichage des dégâts infligés
-          Text(
-            'Dégâts infligés: ${gameViewModel.lastDamage}',
-            style: const TextStyle(fontSize: 20),
-          ),
-        ],
       ),
     );
   }
