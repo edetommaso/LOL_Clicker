@@ -5,7 +5,7 @@ class CoinDisplay extends StatelessWidget {
   final int coins;
 
   const CoinDisplay({super.key, required this.coins});
-
+  
   @override
   Widget build(BuildContext context) {
     return Container(

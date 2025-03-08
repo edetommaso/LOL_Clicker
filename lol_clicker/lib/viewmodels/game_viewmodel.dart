@@ -1,36 +1,41 @@
-// lib/viewmodels/game_viewmodel.dart
 import 'package:flutter/material.dart';
 import '../models/ennemy_model.dart';
+import '../core/services/enemy_service.dart';
 
 class GameViewModel extends ChangeNotifier {
-  EnemyModel _enemy = EnemyModel(name: 'Monstre', totalLife: _calculateTotalLife(1), level: 1);
+  final EnemyRequest _enemyRequest = EnemyRequest();
+  List<EnemyModel> _enemies = [];
+  bool _isLoading = false;
+  String _error = '';
+
+  List<EnemyModel> get enemies => _enemies;
+  bool get isLoading => _isLoading;
+  String get error => _error;
+  
   int _lastDamage = 0;
   int _monstersKilled = 0;
   int _coins = 0;
-
-  EnemyModel get enemy => _enemy;
+  
+  EnemyModel get enemy => _enemies;
   int get lastDamage => _lastDamage;
   int get monstersKilled => _monstersKilled;
   int get coins => _coins;
 
-  // Formule pour calculer les PV totaux en fonction du niveau
   static int _calculateTotalLife(int level) {
     return 50 + (level * 50);
   }
 
-  // Formule pour calculer l'argent gagné en fonction du niveau (10 * (1.35 ^ niveau))
   int _calculateCoinsEarned(int level) {
-    return (10 * (1.25*(level)) ~/ 1); // Utilisation de la formule exponentielle
+    return (10 * (1.25 * level) ~/ 1); // Exponential formula for coins
   }
 
   void attackEnemy() {
-    _lastDamage = 10; // Dégâts fixes pour l'exemple
+    _lastDamage = 10; // Fixed damage for the example
     _enemy.reduceLife(_lastDamage);
 
-    // Vérifier si l'ennemi est mort
     if (_enemy.currentLife <= 0) {
-      _monstersKilled++; // Incrémenter le compteur de monstres tués
-      _addCoins(_calculateCoinsEarned(_enemy.level)); // Ajouter l'argent gagné
+      _monstersKilled++;
+      _addCoins(_calculateCoinsEarned(_enemy.level));
       _spawnNewEnemy();
     }
 
@@ -38,38 +43,73 @@ class GameViewModel extends ChangeNotifier {
   }
 
   void _addCoins(int amount) {
-    _coins += amount; // Ajouter des pièces au solde
+    _coins += amount;
     notifyListeners();
   }
 
   void _spawnNewEnemy() {
-    // Vérifier si 10 monstres ont été tués pour augmenter le niveau
     if (_monstersKilled >= 10) {
-      int newLevel = _enemy.level + 1; // Augmenter le niveau de 1
+      int newLevel = _enemy.level + 1;
       _enemy = EnemyModel(
         name: 'Monstre',
-        totalLife: _calculateTotalLife(newLevel), // Calculer les PV en fonction du nouveau niveau
+        totalLife: _calculateTotalLife(newLevel),
         level: newLevel,
+        experience: _enemy.experience, // Keep the same experience
+        image: _enemy.image, // Keep the same image
       );
-      _monstersKilled = 0; // Réinitialiser le compteur
+      _monstersKilled = 0;
     } else {
-      // Sinon, créer un nouvel ennemi avec les mêmes caractéristiques
       _enemy = EnemyModel(
         name: 'Monstre',
-        totalLife: _calculateTotalLife(_enemy.level), // Recalculer les PV
+        totalLife: _calculateTotalLife(_enemy.level),
         level: _enemy.level,
+        experience: _enemy.experience,
+        image: _enemy.image,
       );
     }
 
-    // Réinitialiser les dégâts infligés
     _lastDamage = 0;
   }
 
   void resetGame() {
-    _enemy = EnemyModel(name: 'Monstre', totalLife: _calculateTotalLife(1), level: 1);
+    _enemy = EnemyModel(
+      name: 'Monstre',
+      totalLife: _calculateTotalLife(1),
+      level: 1,
+      experience: 0,
+      image: '',
+    );
     _lastDamage = 0;
     _monstersKilled = 0;
-    _coins = 0; // Réinitialiser le solde de pièces
+    _coins = 0;
     notifyListeners();
+  }
+
+  // Fetch enemies from the server
+  Future<void> fetchEnemies() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      _enemies = await _enemyRequest.getEnemies();
+    } catch (e) {
+      _error = 'Error fetching enemies: $e';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // Fetch a specific enemy by ID
+  Future<void> fetchEnemyById(int id) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      _enemy = await _enemyRequest.getEnemyById(id) ?? _enemy;
+    } catch (e) {
+      _error = 'Error fetching enemy: $e';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }

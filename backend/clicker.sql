@@ -46,22 +46,24 @@ INSERT INTO `buy` (`id_player`, `id_enhancement`) VALUES
 -- Table structure for table `Enemy`
 --
 
-CREATE TABLE `Enemy` (
-  `level` int NOT NULL,
+CREATE TABLE `enemy` (
+  `level` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `total_life` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `total_life` int(11) NOT NULL,
+  `experience` int(11) NOT NULL,
+  `image` varchar(500) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `Enemy`
+-- Déchargement des données de la table `enemy`
 --
 
-INSERT INTO `Enemy` (`level`, `name`, `total_life`) VALUES
-(1, 'blue slime', 10),
-(2, 'green slime', 20),
-(3, 'red slime', 30),
-(4, 'yellow slime', 40),
-(5, 'king slime', 50);
+INSERT INTO `enemy` (`level`, `name`, `total_life`, `experience`, `image`) VALUES
+(1, 'Carapateur', 10, 0, 11, '/assets/carap.png'),
+(2, 'Baby Raptor', 20, 0, 14, '/assets/braptor.png'),
+(3, 'Red Buff', 30, 0, 18,'/assets/red.png'),
+(4, 'Grubs', 40, 0, 22, '/assets/grubs.png'),
+(5, 'Captain Teemo', 50, 0, 30,'/assets/teemo.png');
 
 -- --------------------------------------------------------
 

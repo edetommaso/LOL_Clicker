@@ -5,7 +5,7 @@ class UserModel {
   final String lastname;
   final String firstname;
   final String birthdate;
-
+  
   // Constructeur classique
   UserModel({
     required this.id,
@@ -29,11 +29,12 @@ class UserModel {
       birthdate: json['birthdate'] ?? 'Date inconnue',
     );
   }
-
+  
   /*
    * Getter qui permet de récupérer l'âge d'une personne
    * à partir de sa date de naissance
    */
+
   int get age {
     try {
       DateTime birth = DateFormat('yyyy-MM-dd').parse(birthdate);

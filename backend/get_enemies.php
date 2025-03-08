@@ -1,7 +1,8 @@
 <?php
+	
 	require_once('db.php');
 	
-	$query = 'SELECT * FROM Enemy WHERE 1=1';
+	$query = 'SELECT * FROM Enemy';
 	$params = [];
 	
 	if (!empty($_GET['level'])) {
@@ -25,6 +26,16 @@
 		$params[':total_life'] = $total_life;
 	    }
 	}
+	
+	if (!empty($_GET['experience'])) {
+		$experience = filter_var($_GET['experience'], FILTER_VALIDATE_INT);
+		if ($experience !== false) {
+			$query .= ' AND experience = :experience';
+			$params[':experience'] = $experience;
+		}
+	}
+	
+
 	
 	try {
 	    $statement = $db->prepare($query);
