@@ -3,8 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/game_viewmodel.dart';
 
-class GameBody extends StatelessWidget {
+class GameBody extends StatefulWidget {
   const GameBody({super.key});
+
+  @override
+  State<GameBody> createState() => _GameBodyState();
+}
+
+class _GameBodyState extends State<GameBody> {
+  bool _showScratch = false;
+
+  void _onMonsterTap(GameViewModel gameViewModel) {
+    setState(() {
+      _showScratch = true;
+    });
+    gameViewModel.attackEnemy();
+    Future.delayed(const Duration(milliseconds: 200), () {
+      setState(() {
+        _showScratch = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,16 +41,25 @@ class GameBody extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
-          // Image du monstre
-          GestureDetector(
-            onTap: () {
-              gameViewModel.attackEnemy();
-            },
-            child: Image.asset(
-              'assets/monster.png',
-              width: 300,
-              height: 300,
-            ),
+          // Image du monstre avec superposition de griffure
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              GestureDetector(
+                onTap: () => _onMonsterTap(gameViewModel),
+                child: Image.asset(
+                  'assets/monster.png',
+                  width: 300,
+                  height: 300,
+                ),
+              ),
+              if (_showScratch)
+                Image.asset(
+                  'assets/scratch.png',
+                  width: 300,
+                  height: 300,
+                ),
+            ],
           ),
           const SizedBox(height: 20),
 
