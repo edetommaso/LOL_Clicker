@@ -11,16 +11,22 @@ class GameBody extends StatefulWidget {
 }
 
 class _GameBodyState extends State<GameBody> {
-  bool _showScratch = false;
+  bool afficherGriffure = false;
 
   void _onMonsterTap(GameViewModel gameViewModel) {
     setState(() {
-      _showScratch = true;
+      afficherGriffure = true;
     });
+
+    // Vérifie si le monstre est mort
+    if (gameViewModel.enemy.currentLife <= 0) {
+        //nothing need to be done here, it is the game view model job
+    }
+
     gameViewModel.attackEnemy();
     Future.delayed(const Duration(milliseconds: 200), () {
       setState(() {
-        _showScratch = false;
+        afficherGriffure = false;
       });
     });
   }
@@ -48,12 +54,12 @@ class _GameBodyState extends State<GameBody> {
               GestureDetector(
                 onTap: () => _onMonsterTap(gameViewModel),
                 child: Image.asset(
-                  'assets/monster.png',
+                  gameViewModel.currentMonsterImage,
                   width: 300,
                   height: 300,
                 ),
               ),
-              if (_showScratch)
+              if (afficherGriffure)
                 Image.asset(
                   'assets/scratch.png',
                   width: 300,

@@ -3,15 +3,27 @@ import 'package:flutter/material.dart';
 import '../models/ennemy_model.dart';
 
 class GameViewModel extends ChangeNotifier {
-  EnemyModel _enemy = EnemyModel(name: 'Monstre', totalLife: _calculateTotalLife(1), level: 1);
+  EnemyModel _enemy =
+      EnemyModel(name: 'Monstre', totalLife: _calculateTotalLife(1), level: 1);
   int _lastDamage = 0;
   int _monstersKilled = 0;
   int _coins = 0;
+
+  // Liste des images de monstres
+  final List<String> _monsterImages = [
+    'assets/monster1.png',
+    'assets/monster2.png',
+    'assets/monster3.png',
+    'assets/monster4.png',
+    // Ajoutez autant d'images de monstres que vous le souhaitez
+  ];
+  int _currentMonsterIndex = 0;
 
   EnemyModel get enemy => _enemy;
   int get lastDamage => _lastDamage;
   int get monstersKilled => _monstersKilled;
   int get coins => _coins;
+  String get currentMonsterImage => _monsterImages[_currentMonsterIndex];
 
   // Formule pour calculer les PV totaux en fonction du niveau
   static int _calculateTotalLife(int level) {
@@ -20,7 +32,9 @@ class GameViewModel extends ChangeNotifier {
 
   // Formule pour calculer l'argent gagné en fonction du niveau (10 * (1.35 ^ niveau))
   int _calculateCoinsEarned(int level) {
-    return (10 * (1.25*(level)) ~/ 1); // Utilisation de la formule exponentielle
+    return (10 *
+        (1.25 * (level)) ~/
+        1); // Utilisation de la formule exponentielle
   }
 
   void attackEnemy() {
@@ -31,7 +45,8 @@ class GameViewModel extends ChangeNotifier {
     if (_enemy.currentLife <= 0) {
       _monstersKilled++; // Incrémenter le compteur de monstres tués
       _addCoins(_calculateCoinsEarned(_enemy.level)); // Ajouter l'argent gagné
-      _spawnNewEnemy();
+      _spawnNewEnemy(_currentMonsterIndex);
+      _changeMonsterImage();
     }
 
     notifyListeners();
@@ -42,13 +57,14 @@ class GameViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _spawnNewEnemy() {
+  void _spawnNewEnemy(int currentMonsterIndex) {
     // Vérifier si 10 monstres ont été tués pour augmenter le niveau
     if (_monstersKilled >= 10) {
       int newLevel = _enemy.level + 1; // Augmenter le niveau de 1
       _enemy = EnemyModel(
         name: 'Monstre',
-        totalLife: _calculateTotalLife(newLevel), // Calculer les PV en fonction du nouveau niveau
+        totalLife: _calculateTotalLife(
+            newLevel), // Calculer les PV en fonction du nouveau niveau
         level: newLevel,
       );
       _monstersKilled = 0; // Réinitialiser le compteur
@@ -60,16 +76,29 @@ class GameViewModel extends ChangeNotifier {
         level: _enemy.level,
       );
     }
+    resetEnemyLife();
 
     // Réinitialiser les dégâts infligés
     _lastDamage = 0;
+    notifyListeners();
   }
 
   void resetGame() {
-    _enemy = EnemyModel(name: 'Monstre', totalLife: _calculateTotalLife(1), level: 1);
+    _enemy = EnemyModel(
+        name: 'Monstre', totalLife: _calculateTotalLife(1), level: 1);
     _lastDamage = 0;
     _monstersKilled = 0;
     _coins = 0; // Réinitialiser le solde de pièces
+    notifyListeners();
+  }
+
+  void resetEnemyLife() {
+    enemy.currentLife = enemy.totalLife;
+    notifyListeners();
+  }
+
+  void _changeMonsterImage() {
+    _currentMonsterIndex = (_currentMonsterIndex + 1) % _monsterImages.length;
     notifyListeners();
   }
 }
