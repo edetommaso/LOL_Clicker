@@ -11,14 +11,14 @@ class GameViewModel extends ChangeNotifier {
   bool _isLoading = false;
   String _error = '';
   int _level = 1; // Increment des niveaux de monstres qui sera incrementer tous les 10 monstres tuées
-  int _lastDamage = 100;
+  int _damage = 1;
   int _monstersKilled = 0;
   int _coins = 0;
   
   EnemyModel get enemy => _enemy;
   bool get isLoading => _isLoading;
   String get error => _error;
-  int get lastDamage => _lastDamage;
+  int get damage => _damage;
   int get monstersKilled => _monstersKilled;
   int get coins => _coins;
   int get level => _level;
@@ -42,7 +42,7 @@ class GameViewModel extends ChangeNotifier {
   
   void attackEnemy() {
     
-    _enemy.reduceLife(_lastDamage);
+    _enemy.reduceLife(_damage);
     
     if (_enemy.currentLife <= 0) {
       _monstersKilled++;
@@ -96,7 +96,7 @@ class GameViewModel extends ChangeNotifier {
   
   void resetGame() {
     fetchEnemyById(1);
-    _lastDamage = 100;
+    _damage = 1;
     _monstersKilled = 0;
     _coins = 0;
     _level = 1;
