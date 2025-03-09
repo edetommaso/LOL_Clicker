@@ -20,7 +20,7 @@ class ShopView extends StatelessWidget {
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.deepPurple,
+              color: Color.fromARGB(255, 65, 65, 65),
             ),
             child: Text(
               'Boutique',

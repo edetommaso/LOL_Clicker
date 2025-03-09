@@ -48,15 +48,15 @@ class _GameViewState extends State<GameView> {
                   // Header personnalisé avec logo et titre
                   Container(
                     padding: const EdgeInsets.all(16),
-                    color: Colors.deepPurple.withOpacity(
+                    color: Color.fromARGB(255, 65, 65, 65).withOpacity(
                         0.7), // Ajouter une opacité pour mieux voir le texte
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
                           'assets/logo.png',
-                          width: 50,
-                          height: 50,
+                          width: 150,
+                          height: 100,
                         ),
                         const SizedBox(width: 10),
                         const Text(
@@ -104,7 +104,7 @@ class _GameViewState extends State<GameView> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 139, 12, 198)
+                        color: Color.fromARGB(255, 65, 65, 65)
                             .withOpacity(0.5), // Fond semi-transparent
                         borderRadius: BorderRadius.circular(8), // Bord arrondi
                       ),

@@ -11,7 +11,7 @@ class CoinDisplay extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.deepPurple.withOpacity(0.8),
+        color: Color.fromARGB(255, 65, 65, 65).withOpacity(0.8),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(

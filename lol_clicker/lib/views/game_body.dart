@@ -31,8 +31,8 @@ class GameBody extends StatelessWidget {
             },
             child: Image.asset(
               gameViewModel.currentMonsterImage,
-              width: 300,
-              height: 300,
+              width: 500,
+              height: 500,
             ),
           ),
           const SizedBox(height: 20),
