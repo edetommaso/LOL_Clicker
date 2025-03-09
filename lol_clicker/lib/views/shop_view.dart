@@ -3,110 +3,168 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/shop_viewmodel.dart';
 import '../viewmodels/game_viewmodel.dart';
-import '../models/shop_item_model.dart';
 
 class ShopView extends StatelessWidget {
-  const ShopView({super.key});
+  const ShopView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final shopViewModel = Provider.of<ShopViewModel>(context);
-    final gameViewModel = Provider.of<GameViewModel>(context); // Pour accéder aux pièces du joueur
+    final gameViewModel = Provider.of<GameViewModel>(context);
 
-    return Drawer(
-      width: MediaQuery.of(context).size.width * 0.85, // Ajuster la largeur à 85% de l'écran
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Color.fromARGB(255, 65, 65, 65),
+    // Si les items n'ont pas été chargés, essayer de les charger
+    if (shopViewModel.items.isEmpty && !shopViewModel.isLoading && shopViewModel.errorMessage == null) {
+      Future.microtask(() => shopViewModel.loadItems());
+    }
+
+    // Afficher un indicateur de chargement si nécessaire
+    if (shopViewModel.isLoading) {
+      return const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 16),
+            Text('Chargement des items...'),
+          ],
+        ),
+      );
+    }
+    
+    // Afficher un message d'erreur s'il y en a un
+    if (shopViewModel.errorMessage != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Erreur: ${shopViewModel.errorMessage}',
+              style: const TextStyle(color: Colors.red),
+              textAlign: TextAlign.center,
             ),
-            child: Text(
-              'Boutique',
-              style: TextStyle(
-                fontSize: 24,
-                color: Colors.white,
-              ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => shopViewModel.loadItems(),
+              child: const Text('Réessayer'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Si aucun item n'est disponible
+    if (shopViewModel.items.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Aucun item disponible dans la boutique',
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => shopViewModel.loadItems(),
+              child: const Text('Rafraîchir'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Afficher la liste des items
+    return Column(
+      children: [
+        const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text(
+            'Boutique',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          if (shopViewModel.errorMessage != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text(
-                shopViewModel.errorMessage!,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.red,
-                ),
-              ),
+        ),
+        // Afficher le message d'erreur pour l'achat si présent
+        if (shopViewModel.errorMessage != null)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              shopViewModel.errorMessage!,
+              style: const TextStyle(color: Colors.red),
+              textAlign: TextAlign.center,
             ),
-          for (var item in shopViewModel.items)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                children: [
-                  // Image de l'item
-                  Image.asset(
+          ),
+        // Solde actuel
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            'Solde: ${gameViewModel.coins} coins',
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        // Liste des items
+        Expanded(
+          child: ListView.builder(
+            itemCount: shopViewModel.items.length,
+            itemBuilder: (context, index) {
+              final item = shopViewModel.items[index];
+              final bool canBuy = gameViewModel.coins >= item.price;
+              
+              return Card(
+                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                color: canBuy ? null : Colors.grey[200],
+                child: ListTile(
+                  leading: Image.network(
                     item.image,
-                    width: 30, // Largeur réduite
-                    height: 30, // Hauteur réduite
-                  ),
-                  const SizedBox(width: 16), // Espacement entre l'image et le texte
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Nom de l'item
-                        Text(
-                          item.name,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 4), // Espacement entre le nom et la description
-                        // Description de l'item
-                        Text(
-                          item.description,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        const SizedBox(height: 4), // Espacement entre la description et le prix
-                        // Prix de l'item
-                        Text(
-                          'Prix: ${item.price} pièces',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        // Nombre de fois que l'item a été acheté
-                        Text(
-                          'Acheté ${item.purchaseCount} fois',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 16), // Espacement entre le texte et le bouton
-                  // Bouton "Acheter"
-                  ElevatedButton(
-                    onPressed: () {
-                      shopViewModel.buyItem(item.id, gameViewModel); // Acheter l'item
+                    width: 50,
+                    height: 50,
+                    errorBuilder: (context, error, stackTrace) {
+                      print("Erreur de chargement d'image: $error pour ${item.image}");
+                      return const Icon(Icons.error, size: 50);
                     },
-                    child: const Text('Acheter'),
                   ),
-                ],
-              ),
-            ),
-        ],
-      ),
+                  title: Text(item.name),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(item.description),
+                      Text(
+                        'DPS: +${item.price ~/ 10}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
+                        ),
+                      ),
+                    ],
+                  ),
+                  trailing: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        '${item.price} coins',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: canBuy ? Colors.black : Colors.red,
+                        ),
+                      ),
+                      if (item.purchaseCount > 0)
+                        Text('Acheté: ${item.purchaseCount}'),
+                    ],
+                  ),
+                  onTap: () {
+                    shopViewModel.buyItem(item.id, gameViewModel);
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

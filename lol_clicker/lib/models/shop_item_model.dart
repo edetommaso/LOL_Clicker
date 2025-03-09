@@ -17,12 +17,15 @@ class ShopItemModel {
   });
 
   factory ShopItemModel.fromJson(Map<String, dynamic> json) {
+    // Pour le débogage
+    print("JSON reçu: $json");
+    
     return ShopItemModel(
-      id: json['id'] ?? 0,
-      name: json['name'] as String? ?? 'Nom inconnu',
-      description: json['description'] as String,
-      price: json['price'] as int? ?? 1, // Valeur par défaut pour totalLife
-      image: json['image'] as String,
+      id: json['id'].toString(), // Convertir en String car id est String dans le modèle
+      name: json['name']?.toString() ?? 'Nom inconnu',
+      description: json['description']?.toString() ?? 'Aucune description',
+      price: json['price'] is int ? json['price'] : int.tryParse(json['price'].toString()) ?? 0,
+      image: json['image']?.toString() ?? '',
     );
   }
 }
