@@ -64,6 +64,14 @@ flutter:
   assets:
     - lib/core/config/.env
     - assets/
+    - assets/items/LongSword.png
+    - assets/items/warhammer.png
+    - assets/items/whisper.png
+    - assets/items/BFSword.png
+    - assets/items/kraken.png
+    - assets/items/infinity.png
+    - assets/items/collector.png
+  # An image asset can refer to one or more resolution-specific "variants", see
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   

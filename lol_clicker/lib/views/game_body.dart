@@ -2,38 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/game_viewmodel.dart';
+import '../viewmodels/shop_viewmodel.dart';
 
-class GameBody extends StatefulWidget {
+class GameBody extends StatelessWidget {
   const GameBody({super.key});
-
-  @override
-  State<GameBody> createState() => _GameBodyState();
-}
-
-class _GameBodyState extends State<GameBody> {
-  bool afficherGriffure = false;
-
-  void _onMonsterTap(GameViewModel gameViewModel) {
-    setState(() {
-      afficherGriffure = true;
-    });
-
-    // Vérifie si le monstre est mort
-    if (gameViewModel.enemy.currentLife <= 0) {
-        //nothing need to be done here, it is the game view model job
-    }
-
-    gameViewModel.attackEnemy();
-    Future.delayed(const Duration(milliseconds: 200), () {
-      setState(() {
-        afficherGriffure = false;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     final gameViewModel = Provider.of<GameViewModel>(context);
+    final shopViewModel = Provider.of<ShopViewModel>(context);
     final enemy = gameViewModel.enemy;
 
     return Center(
@@ -47,25 +24,16 @@ class _GameBodyState extends State<GameBody> {
           ),
           const SizedBox(height: 20),
 
-          // Image du monstre avec superposition de griffure
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              GestureDetector(
-                onTap: () => _onMonsterTap(gameViewModel),
-                child: Image.asset(
-                  gameViewModel.currentMonsterImage,
-                  width: 300,
-                  height: 300,
-                ),
-              ),
-              if (afficherGriffure)
-                Image.asset(
-                  'assets/scratch.png',
-                  width: 300,
-                  height: 300,
-                ),
-            ],
+          // Image du monstre
+          GestureDetector(
+            onTap: () {
+              gameViewModel.attackEnemy(shopViewModel.items); // Passer les items achetés
+            },
+            child: Image.asset(
+              gameViewModel.currentMonsterImage,
+              width: 300,
+              height: 300,
+            ),
           ),
           const SizedBox(height: 20),
 
