@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const GameView(), // Changer HomeView par GameView
+        home: const GameView(),
       ),
     );
   }

@@ -62,7 +62,7 @@ class EnemyWidgets extends StatelessWidget {
         
         // Affichage des dégâts infligés
         Text(
-          'Dégâts infligés: ${gameViewModel.lastDamage}',
+          'Dégâts infligés: ${gameViewModel.damage}',
           style: const TextStyle(fontSize: 20),
         ),
       ],

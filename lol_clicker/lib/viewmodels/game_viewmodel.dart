@@ -43,6 +43,7 @@ class GameViewModel extends ChangeNotifier {
   void attackEnemy() {
     
     _enemy.reduceLife(_damage);
+    _addCoins(_damage);
     
     if (_enemy.currentLife <= 0) {
       _monstersKilled++;
@@ -50,7 +51,6 @@ class GameViewModel extends ChangeNotifier {
       _enemy.currentLife = _enemy.totalLife;
       _spawnNewEnemy();
     }
-    
     notifyListeners();
   
   }
