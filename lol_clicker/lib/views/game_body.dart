@@ -20,7 +20,7 @@ class GameBody extends StatelessWidget {
           // Compteur de monstres tués
           Text(
             'Monstres tués: ${gameViewModel.monstersKilled}/10',
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white,),
           ),
           const SizedBox(height: 20),
 
@@ -51,14 +51,14 @@ class GameBody extends StatelessWidget {
           // Affichage du niveau et des PV
           Text(
             'Niveau: ${enemy.level} | PV: ${enemy.currentLife}/${enemy.totalLife}',
-            style: const TextStyle(fontSize: 24),
+            style: const TextStyle(fontSize: 24,color: Colors.white,),
           ),
           const SizedBox(height: 20),
 
           // Affichage des dégâts infligés
           Text(
             'Dégâts infligés: ${gameViewModel.lastDamage}',
-            style: const TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 20, color: Colors.white,),
           ),
         ],
       ),
