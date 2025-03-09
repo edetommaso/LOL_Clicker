@@ -9,6 +9,9 @@ class GameViewModel extends ChangeNotifier {
   int _monstersKilled = 0;
   int _coins = 0;
   int _baseDamage = 1; // Dégâts de base par clic
+  int _dps = 1 ; // Exemple de valeur de DPS
+
+  int get dps => _dps;
 
   // Liste des images de monstres
   final List<String> _monsterImages = [
@@ -110,6 +113,11 @@ class GameViewModel extends ChangeNotifier {
   // Méthode pour retirer des pièces
   void removeCoins(int amount) {
     _coins -= amount; // Retirer des pièces
+    notifyListeners();
+  }
+
+  void updateDps(int newDps) {
+    _dps = newDps;
     notifyListeners();
   }
 }
