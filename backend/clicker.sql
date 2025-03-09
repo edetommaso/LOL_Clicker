@@ -29,16 +29,13 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `buy` (
   `id_player` int(11) NOT NULL,
-  `id_enhancement` int(11) NOT NULL
+  `id_items` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `buy`
 --
 
-INSERT INTO `buy` (`id_player`, `id_enhancement`) VALUES
-(1, 1),
-(2, 1);
 
 -- --------------------------------------------------------
 
@@ -47,7 +44,7 @@ INSERT INTO `buy` (`id_player`, `id_enhancement`) VALUES
 --
 
 CREATE TABLE `enemy` (
-  `id` serial PRIMARY KEY,
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
   `categorie` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `total_life` int(11) NOT NULL,
@@ -69,25 +66,25 @@ INSERT INTO `enemy` (`categorie`, `name`, `total_life`, `experience`, `image`) V
 -- --------------------------------------------------------
 
 --
--- Structure de la table `enhancement`
+-- Structure de la table `items`
 --
 
-CREATE TABLE `enhancement` (
-  `id_enhancement` int(11) NOT NULL,
-  `experience_cost` int(11) NOT NULL,
-  `boost_value` int(11) NOT NULL,
-  `id_type` int(11) NOT NULL
+CREATE TABLE `items` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(50) NOT NULL,
+  `description` VARCHAR(500) NOT NULL,
+  `price` INT(11) NOT NULL,
+  `image` VARCHAR(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Déchargement des données de la table `enhancement`
---
-
-INSERT INTO `enhancement` (`id_enhancement`, `experience_cost`, `boost_value`, `id_type`) VALUES
-(1, 0, 1, 1),
-(2, 50, 2, 1),
-(3, 0, 1, 2),
-(4, 50, 2, 2);
+INSERT INTO `items` (`name`, `description`, `price`, `image`) VALUES
+( 'Long Sword', 'aaa', 35, 'assets/LongSword.png'),
+( 'Caulfield`s Warhammer', 'aaa', 105, 'assets/warhammer.png'),
+( 'Last Whisper', 'aaa', 300, 'assets/whisper.png'),
+( 'B. F. Sword', 'aaa', 650, 'assets/BFSword.png'),
+( 'Kraken Slayer', 'aaa', 800, 'assets/kraken.png'),
+( 'Infinity Edge', 'aaa', 999, 'assets/infinity.png'),
+( 'The Collector', 'aaa', 1500, 'assets/collector.png');
 
 -- --------------------------------------------------------
 
@@ -109,25 +106,6 @@ CREATE TABLE `player` (
 INSERT INTO `player` (`id_player`, `pseudo`, `total_experience`, `id_ennemy`) VALUES
 (1, 'OmegaZell', 0, 1),
 (2, 'Sparadrap', 0, 1);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `type_enhancement`
---
-
-CREATE TABLE `type_enhancement` (
-  `id_type` int(11) NOT NULL,
-  `name_type` varchar(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Déchargement des données de la table `type_enhancement`
---
-
-INSERT INTO `type_enhancement` (`id_type`, `name_type`) VALUES
-(1, 'dps'),
-(2, 'exp');
 
 -- --------------------------------------------------------
 
@@ -160,30 +138,18 @@ INSERT INTO `users` (`id_user`, `firstname`, `lastname`, `birthdate`) VALUES
 --
 -- Index pour la table `buy`
 --
+
 ALTER TABLE `buy`
-  ADD PRIMARY KEY (`id_player`,`id_enhancement`),
-  ADD KEY `buy_Enhancement0_FK` (`id_enhancement`);
-
-
---
--- Index pour la table `enhancement`
---
-ALTER TABLE `enhancement`
-  ADD PRIMARY KEY (`id_enhancement`),
-  ADD KEY `Enhancement_Type_enhancement_FK` (`id_type`);
+  ADD PRIMARY KEY (`id_player`,`id_items`),
+  ADD KEY `buy_Items0_FK` (`id_items`);
 
 --
 -- Index pour la table `player`
 --
+
 ALTER TABLE `player`
   ADD PRIMARY KEY (`id_player`),
   ADD KEY `Player_id_ennemy_FK` (`id_ennemy`);
-
---
--- Index pour la table `type_enhancement`
---
-ALTER TABLE `type_enhancement`
-  ADD PRIMARY KEY (`id_type`);
 
 --
 -- Index pour la table `users`
@@ -195,25 +161,11 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour les tables déchargées
 --
 
-
-
---
--- AUTO_INCREMENT pour la table `enhancement`
---
-ALTER TABLE `enhancement`
-  MODIFY `id_enhancement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
 --
 -- AUTO_INCREMENT pour la table `player`
 --
 ALTER TABLE `player`
   MODIFY `id_player` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT pour la table `type_enhancement`
---
-ALTER TABLE `type_enhancement`
-  MODIFY `id_type` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `users`
@@ -229,14 +181,10 @@ ALTER TABLE `users`
 -- Contraintes pour la table `buy`
 --
 ALTER TABLE `buy`
-  ADD CONSTRAINT `buy_Enhancement0_FK` FOREIGN KEY (`id_enhancement`) REFERENCES `enhancement` (`id_enhancement`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `buy_Items0_FK` FOREIGN KEY (`id_items`) REFERENCES `items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `buy_Player_FK` FOREIGN KEY (`id_player`) REFERENCES `player` (`id_player`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Contraintes pour la table `enhancement`
---
-ALTER TABLE `enhancement`
-  ADD CONSTRAINT `Enhancement_Type_enhancement_FK` FOREIGN KEY (`id_type`) REFERENCES `type_enhancement` (`id_type`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

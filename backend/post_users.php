@@ -38,11 +38,11 @@ try {
                 ':lastname' => htmlspecialchars(strip_tags($data['lastname'])),
                 ':birthdate' => date("Y-m-d", strtotime($data['birthdate']))
             ]);
-
-
+            
+            
             $response = ["success" => "Utilisateur ajouté", "id" => $db->lastInsertId()];
             break;
-
+        
         case "update":
             if (!isset($data['id_user'])) {
                 throw new Exception("ID manquant");

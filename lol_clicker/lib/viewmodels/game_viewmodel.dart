@@ -94,15 +94,7 @@ class GameViewModel extends ChangeNotifier {
     }
   }
   
-  void resetGame() {
-    fetchEnemyById(1);
-    _damage = 1;
-    _monstersKilled = 0;
-    _coins = 0;
-    _level = 1;
-    _life();
-    notifyListeners();
-  }
+  
   
   Future<void> fetchEnemies() async {
     _isLoading = true;
@@ -132,22 +124,35 @@ class GameViewModel extends ChangeNotifier {
     _isLoading = true;
     _error = '';
     notifyListeners();
+
     try {
       EnemyModel? fetchedEnemy = await _enemyRequest.getEnemyById(id);
       if (fetchedEnemy != null) {
         _enemy = fetchedEnemy;
-        
         // Mettre à jour la vie de l'ennemi en fonction du niveau
         _enemy.totalLife = _calculateTotalLife();
         _enemy.currentLife = _enemy.totalLife;
+
       } else {
         _error = 'Enemy not found';
       }
+      
     } catch (e) {
       _error = 'Error fetching enemy: $e';
     } finally {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+    void removeCoins(int amount) {
+    _coins -= amount; // Retirer des pièces
+    notifyListeners();
+  }
+  
+  // lib/viewmodels/game_viewmodel.dart
+  void updateDps(int newDps) {
+    _damage = newDps;
+    notifyListeners();
   }
 }
