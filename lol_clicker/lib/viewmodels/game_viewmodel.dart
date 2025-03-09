@@ -4,12 +4,13 @@ import '../models/ennemy_model.dart';
 import '../models/shop_item_model.dart'; // Pour accéder à ShopItemModel
 
 class GameViewModel extends ChangeNotifier {
-  EnemyModel _enemy = EnemyModel(name: 'Monstre', totalLife: _calculateTotalLife(1), level: 1);
+  EnemyModel _enemy =
+      EnemyModel(name: 'Monstre', totalLife: _calculateTotalLife(1), level: 1);
   int _lastDamage = 0;
   int _monstersKilled = 0;
   int _coins = 0;
   int _baseDamage = 1; // Dégâts de base par clic
-  int _dps = 1 ; // Exemple de valeur de DPS
+  int _dps = 1; // Exemple de valeur de DPS
 
   int get dps => _dps;
 
@@ -36,14 +37,16 @@ class GameViewModel extends ChangeNotifier {
 
   // Formule pour calculer l'argent gagné en fonction du niveau (10 * (1.35 ^ niveau))
   int _calculateCoinsEarned(int level) {
-    return (10 * (1.25 * level)) ~/ 1; // Utilisation de la formule exponentielle
+    return (10 * (1.25 * level)) ~/
+        1; // Utilisation de la formule exponentielle
   }
 
   // Méthode pour calculer les dégâts totaux en fonction des items achetés
   int calculateTotalDamage(List<ShopItemModel> items) {
     int additionalDamage = 0;
     for (var item in items) {
-      additionalDamage += (item.price ~/ 10) * item.purchaseCount; // Dégâts supplémentaires basés sur le prix
+      additionalDamage += (item.price ~/ 10) *
+          item.purchaseCount; // Dégâts supplémentaires basés sur le prix
     }
     return _baseDamage + additionalDamage;
   }
@@ -74,7 +77,8 @@ class GameViewModel extends ChangeNotifier {
       int newLevel = _enemy.level + 1; // Augmenter le niveau de 1
       _enemy = EnemyModel(
         name: 'Monstre',
-        totalLife: _calculateTotalLife(newLevel), // Calculer les PV en fonction du nouveau niveau
+        totalLife: _calculateTotalLife(
+            newLevel), // Calculer les PV en fonction du nouveau niveau
         level: newLevel,
       );
       _monstersKilled = 0; // Réinitialiser le compteur
@@ -93,7 +97,8 @@ class GameViewModel extends ChangeNotifier {
   }
 
   void resetGame() {
-    _enemy = EnemyModel(name: 'Monstre', totalLife: _calculateTotalLife(1), level: 1);
+    _enemy = EnemyModel(
+        name: 'Monstre', totalLife: _calculateTotalLife(1), level: 1);
     _lastDamage = 0;
     _monstersKilled = 0;
     _coins = 0; // Réinitialiser le solde de pièces
@@ -116,6 +121,7 @@ class GameViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // lib/viewmodels/game_viewmodel.dart
   void updateDps(int newDps) {
     _dps = newDps;
     notifyListeners();

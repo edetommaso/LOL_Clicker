@@ -58,11 +58,13 @@ class ShopViewModel extends ChangeNotifier {
 
   List<ShopItemModel> get items => _items;
 
-  String? _errorMessage; // Message d'erreur si le joueur n'a pas assez de pièces
+  String?
+      _errorMessage; // Message d'erreur si le joueur n'a pas assez de pièces
 
   String? get errorMessage => _errorMessage;
 
- // Méthode pour acheter un item
+  // Méthode pour acheter un item
+  // lib/viewmodels/shop_viewmodel.dart
   void buyItem(String itemId, GameViewModel gameViewModel) {
     final item = _items.firstWhere((item) => item.id == itemId);
     if (gameViewModel.coins >= item.price) {
@@ -70,9 +72,15 @@ class ShopViewModel extends ChangeNotifier {
       gameViewModel.removeCoins(item.price);
       item.purchaseCount++; // Incrémenter le nombre d'achats
       _errorMessage = null; // Réinitialiser le message d'erreur
+
+      // Mettre à jour le DPS en fonction de l'item acheté
+      gameViewModel.updateDps(
+          gameViewModel.dps + (item.price ~/ 10)); // Exemple de calcul de DPS
+
       print('Item acheté: ${item.name} (Acheté ${item.purchaseCount} fois)');
     } else {
-      _errorMessage = 'Pas assez de pièces pour acheter ${item.name}'; // Message d'erreur
+      _errorMessage =
+          'Pas assez de pièces pour acheter ${item.name}'; // Message d'erreur
     }
     notifyListeners();
   }

@@ -48,7 +48,8 @@ class _GameViewState extends State<GameView> {
                   // Header personnalisé avec logo et titre
                   Container(
                     padding: const EdgeInsets.all(16),
-                    color: Colors.deepPurple.withOpacity(0.7), // Ajouter une opacité pour mieux voir le texte
+                    color: Colors.deepPurple.withOpacity(
+                        0.7), // Ajouter une opacité pour mieux voir le texte
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -84,7 +85,8 @@ class _GameViewState extends State<GameView> {
               // Affichage du solde de pièces en bas à gauche
               Positioned(
                 left: 16,
-                bottom: 60, // Positionné en bas, avec de l'espace pour le DPS en dessous
+                bottom:
+                    60, // Positionné en bas, avec de l'espace pour le DPS en dessous
                 child: Consumer<GameViewModel>(
                   builder: (context, gameViewModel, child) {
                     return CoinDisplay(coins: gameViewModel.coins);
@@ -92,15 +94,18 @@ class _GameViewState extends State<GameView> {
                 ),
               ),
               // Affichage du DPS en bas à gauche, en dessous des pièces
+              // lib/views/game_view.dart
               Positioned(
                 left: 16,
                 bottom: 16, // Positionné en dessous des pièces
                 child: Consumer<GameViewModel>(
                   builder: (context, gameViewModel, child) {
                     return Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 139, 12, 198).withOpacity(0.5), // Fond semi-transparent
+                        color: const Color.fromARGB(255, 139, 12, 198)
+                            .withOpacity(0.5), // Fond semi-transparent
                         borderRadius: BorderRadius.circular(8), // Bord arrondi
                       ),
                       child: Text(
