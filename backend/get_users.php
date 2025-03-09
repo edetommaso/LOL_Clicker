@@ -3,7 +3,7 @@
 	header("Access-Control-Allow-Origin: *");
 	header("Access-Control-Allow-Methods: GET");
 	header("Access-Control-Allow-Headers: Content-Type, Accept");
-
+	
 	$query = 'SELECT * FROM users WHERE 1=1';
 	$params = [];
 

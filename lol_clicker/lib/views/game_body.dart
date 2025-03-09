@@ -16,12 +16,8 @@ class GameBody extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          EnemyWidgets(),
-          // Affichage des dégâts infligés
-          Text(
-            'Dégâts infligés: ${gameViewModel.lastDamage}',
-            style: const TextStyle(fontSize: 20),
-          ),
+          
+          EnemyWidgets()
         ],
       ),
     );

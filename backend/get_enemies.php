@@ -1,15 +1,24 @@
 <?php
 	
 	require_once('db.php');
+	header("Access-Control-Allow-Origin: *");
+	header("Access-Control-Allow-Methods: GET");
+	header("Access-Control-Allow-Headers: Content-Type, Accept");
+	header("Content-Type: application/json");
 	
-	$query = 'SELECT * FROM Enemy';
+	$query = 'SELECT * FROM Enemy WHERE 1=1';
 	$params = [];
 	
-	if (!empty($_GET['level'])) {
-	    $level = filter_var($_GET['level'], FILTER_VALIDATE_INT);
-	    if ($level !== false) {
-		$query .= ' AND level = :level';
-		$params[':level'] = $level;
+	if (!empty($_GET['id'])) {
+	    $query .= ' AND id = :id';
+	    $params[':id'] = $_GET['id'];
+	}
+
+	if (!empty($_GET['categorie'])) {
+	    $categorie = filter_var($_GET['categorie'], FILTER_VALIDATE_INT);
+	    if ($categorie !== false) {
+		$query .= ' AND categorie = :categorie';
+		$params[':categorie'] = $categorie;
 	    }
 	}
 	
@@ -33,6 +42,12 @@
 			$query .= ' AND experience = :experience';
 			$params[':experience'] = $experience;
 		}
+	}
+
+	if (!empty($_GET['image'])) {
+	    $image = htmlspecialchars(strip_tags($_GET['image']));
+	    $query .= ' AND image = :image';
+	    $params[':image'] = $image;
 	}
 	
 

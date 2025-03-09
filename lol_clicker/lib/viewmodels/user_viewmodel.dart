@@ -24,14 +24,14 @@ class UserViewModel extends ChangeNotifier {
     _isLoading = true;
     _error = '';
     notifyListeners();
-
+    
     try {
       _users = await _userRequest.getUsers();
       _filteredUsers = List.from(_users);
     } catch (e) {
       _error = e.toString();
     }
-
+    
     _isLoading = false;
     notifyListeners();
   }
@@ -61,7 +61,7 @@ class UserViewModel extends ChangeNotifier {
     } catch (e) {
       _error = e.toString();
     }
-
+    
     _isLoading = false;
     notifyListeners();
   }

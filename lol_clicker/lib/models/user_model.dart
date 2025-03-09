@@ -13,7 +13,7 @@ class UserModel {
     required this.firstname,
     required this.birthdate,
   });
-
+  
   /*
    * Un factory en Flutter est un constructeur particulier qui permet
    * de créer des objets en effectuant des traitements et

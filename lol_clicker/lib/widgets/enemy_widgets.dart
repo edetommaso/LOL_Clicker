@@ -14,13 +14,21 @@ class EnemyWidgets extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Text(
+            '${enemy.name}',
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          'Categorie : ${enemy.categorie}',
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
         // Compteur de monstres tués
         Text(
           'Monstres tués: ${gameViewModel.monstersKilled}/10',
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 20),
-
+        
         // Image du monstre
         GestureDetector(
           onTap: () {
@@ -47,11 +55,11 @@ class EnemyWidgets extends StatelessWidget {
         
         // Affichage du niveau et des PV
         Text(
-          'Niveau: ${enemy.level} | PV: ${enemy.currentLife}/${enemy.totalLife}',
+          'Niveau: ${gameViewModel.level} | PV: ${enemy.currentLife}/${enemy.totalLife}',
           style: const TextStyle(fontSize: 24),
         ),
         const SizedBox(height: 20),
-
+        
         // Affichage des dégâts infligés
         Text(
           'Dégâts infligés: ${gameViewModel.lastDamage}',
