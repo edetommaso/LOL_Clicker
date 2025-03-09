@@ -7,11 +7,11 @@ CREATE TABLE items (
 );
 
 INSERT INTO items (id, name, description, price, imagePath) VALUES
-(1, 'Long Sword', 'aaa', 35.00, 'assets/LongSword.png'),
-(2, 'Caulfield`s Warhammer', 'aaa', 105.00, 'assets/warhammer.png'),
-(3, 'Last Whisper', 'aaa', 300.00, 'assets/whisper.png'),
-(4, 'B. F. Sword', 'aaa', 650.00, 'assets/BFSword.png'),
-(5, 'Kraken Slayer', 'aaa', 800.00, 'assets/kraken.png'),
-(6, 'Infinity Edge', 'aaa', 999.00, 'assets/infinity_edge.png'),
-(7, 'The Collector', 'aaa', 1500.00, 'assets/collector.png');
+(1, 'Long Sword', 'aaa', 350.00, 'assets/items/LongSword.png'),
+(2, 'Caulfield`s Warhammer', 'aaa', 10500.00, 'assets/items/warhammer.png'),
+(3, 'Last Whisper', 'aaa', 30000.00, 'assets/items/whisper.png'),
+(4, 'B. F. Sword', 'aaa', 55000.00, 'assets/items/BFSword.png'),
+(5, 'Kraken Slayer', 'aaa', 700000.00, 'assets/items/kraken.png'),
+(6, 'Infinity Edge', 'aaa', 999000.00, 'assets/items/infinity.png'),
+(7, 'The Collector', 'aaa', 10000000.00, 'assets/items/collector.png');
 
