@@ -57,9 +57,12 @@ class _GameViewState extends State<GameView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset('assets/logo.png', width: 150, height: 100),
+                        Image.asset(
+                          'assets/logo.png',
+                          width: 250,
+                          height: 100,
+                        ),
                         const SizedBox(width: 10),
-                        const Text('League of Clicker', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
                       ],
                     ),
                   ),

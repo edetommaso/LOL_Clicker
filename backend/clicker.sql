@@ -83,13 +83,13 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`name`, `description`, `price`, `image`, `id_type`) VALUES
-('Long Sword', 'aaa', 35, 'assets/items/LongSword.png', 1),
-('Caulfield`s Warhammer', 'aaa', 105, 'assets/items/warhammer.png', 1),
-('Last Whisper', 'aaa', 300, 'assets/items/whisper.png', 1),
-('B. F. Sword', 'aaa', 650, 'assets/items/BFSword.png', 1),
-('Kraken Slayer', 'aaa', 800, 'assets/items/kraken.png', 1),
-('Infinity Edge', 'aaa', 999, 'assets/items/infinity.png', 1),
-('The Collector', 'aaa', 1500, 'assets/items/collector.png', 1);
+('Long Sword', 'DPC', 35, 'assets/items/LongSword.png', 1),
+('Caulfield`s Warhammer', 'DPC', 105, 'assets/items/warhammer.png', 1),
+('Last Whisper', 'DPC', 300, 'assets/items/whisper.png', 1),
+('B. F. Sword', 'DPC', 650, 'assets/items/BFSword.png', 1),
+('Kraken Slayer', 'DPC', 800, 'assets/items/kraken.png', 1),
+('Infinity Edge', 'DPC', 999, 'assets/items/infinity.png', 1),
+('The Collector', 'DPC', 1500, 'assets/items/collector.png', 1);
 
 -- --------------------------------------------------------
 
