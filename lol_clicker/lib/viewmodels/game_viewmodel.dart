@@ -15,7 +15,6 @@ class GameViewModel extends ChangeNotifier {
   int _monstersKilled = 0;
   int _coins = 0;
   int _coin_per_click = 1;
-  
   EnemyModel get enemy => _enemy;
   bool get isLoading => _isLoading;
   int get coin_per_click => _coin_per_click;
@@ -30,12 +29,7 @@ class GameViewModel extends ChangeNotifier {
   }
     
   int _calculateTotalLife() {
-    return (_level * _enemy.intialLife);
-  }
-  
-  void _life(){
-    _enemy.totalLife = _calculateTotalLife();
-    _enemy.currentLife = _enemy.totalLife;
+    return (_level *_level* _enemy.intialLife);
   }
   
   int _calculateCoinsEarned() {
@@ -45,7 +39,7 @@ class GameViewModel extends ChangeNotifier {
   void attackEnemy() {
     
     _enemy.reduceLife(_damage);
-    _addCoins(_damage);
+    _addCoins(_coin_per_click);
     
     if (_enemy.currentLife <= 0) {
       _monstersKilled++;
@@ -63,6 +57,7 @@ class GameViewModel extends ChangeNotifier {
   }
   
   Future<void> _spawnNewEnemy() async {
+    
     try {
       _isLoading = true;
       notifyListeners();
@@ -94,6 +89,7 @@ class GameViewModel extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+
   }
   
   
@@ -146,7 +142,7 @@ class GameViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
-
+    
     void removeCoins(int amount) {
     _coins -= amount; // Retirer des pièces
     notifyListeners();
@@ -154,7 +150,14 @@ class GameViewModel extends ChangeNotifier {
   
   // lib/viewmodels/game_viewmodel.dart
   void updateDps(int newDps) {
-    _damage = newDps;
+    _damage += newDps;
     notifyListeners();
   }
+  
+  void updateCoinPerClick(int upgrade){
+    _coin_per_click+= upgrade;
+    notifyListeners();
+  }
+
+
 }

@@ -6,6 +6,7 @@ class ShopItemModel {
   final int price;
   final String image;
   int purchaseCount;
+  final String typeAmelioration;
   
   ShopItemModel({
     required this.id,
@@ -14,18 +15,18 @@ class ShopItemModel {
     required this.price,
     required this.image,
     this.purchaseCount = 0,
+    required this.typeAmelioration,
   });
 
   factory ShopItemModel.fromJson(Map<String, dynamic> json) {
-    // Pour le débogage
-    print("JSON reçu: $json");
     
     return ShopItemModel(
-      id: json['id'].toString(), // Convertir en String car id est String dans le modèle
+      id: json['id'].toString(),
       name: json['name']?.toString() ?? 'Nom inconnu',
       description: json['description']?.toString() ?? 'Aucune description',
       price: json['price'] is int ? json['price'] : int.tryParse(json['price'].toString()) ?? 0,
       image: json['image']?.toString() ?? '',
+      typeAmelioration: json['type_name']?.toString() ?? 'Type inconnu',
     );
   }
 }

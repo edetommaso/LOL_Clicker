@@ -9,7 +9,6 @@ class ShopViewModel extends ChangeNotifier {
   final ShopItemRequest _itemRequest = ShopItemRequest();
   List<ShopItemModel> _items = [];
   bool _isLoading = false;
-  
   List<ShopItemModel> get items => _items;
   bool get isLoading => _isLoading;
   String? _errorMessage;
@@ -38,8 +37,12 @@ class ShopViewModel extends ChangeNotifier {
       item.purchaseCount++; 
       _errorMessage = null;
       
-      // Mettre à jour le DPS
-      gameViewModel.updateDps(gameViewModel.damage + (item.price ~/ 10)); 
+      // Mettre à jour le DPC
+      if(item.typeAmelioration=='damage'){
+      gameViewModel.updateDps((item.price ~/ 10)); 
+      }else{
+        gameViewModel.updateCoinPerClick((item.price ~/ 10));
+      }
       print('Item acheté: ${item.name} (Acheté ${item.purchaseCount} fois)');
     } else {
       _errorMessage = 'Pas assez de pièces pour acheter ${item.name}';

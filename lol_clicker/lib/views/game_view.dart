@@ -53,18 +53,10 @@ class _GameViewState extends State<GameView> {
                       children: [
                         Image.asset(
                           'assets/logo.png',
-                          width: 150,
+                          width: 250,
                           height: 100,
                         ),
                         const SizedBox(width: 10),
-                        const Text(
-                          'League of Clicker',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
                       ],
                     ),
                   ),
