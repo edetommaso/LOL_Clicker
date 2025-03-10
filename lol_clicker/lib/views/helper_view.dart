@@ -13,11 +13,39 @@ class HelperView extends StatelessWidget {
     final gameViewModel = Provider.of<GameViewModel>(context);
 
     if (helperViewModel.isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 16),
+            Text('Chargement des helpers...'),
+          ],
+        ),
+      );
     }
 
+    // Afficher un message d'erreur avec bouton Réessayer si nécessaire
     if (helperViewModel.errorMessage != null) {
-      return Center(child: Text('Erreur: ${helperViewModel.errorMessage}'));
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              helperViewModel.errorMessage!,
+              style: const TextStyle(color: Colors.red),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                helperViewModel.clearError(); // Effacer l’erreur et revenir à la liste
+              },
+              child: const Text('Réessayer'),
+            ),
+          ],
+        ),
+      );
     }
 
     return Column(
@@ -41,13 +69,21 @@ class HelperView extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 color: canBuy ? null : Colors.grey[200],
                 child: ListTile(
-                  leading: Image.network(helper.image, width: 50, height: 50, errorBuilder: (_, __, ___) => const Icon(Icons.error)),
+                  leading: Image.network(
+                    helper.image,
+                    width: 80,  // Image agrandie
+                    height: 80, // Image agrandie
+                    errorBuilder: (_, __, ___) => const Icon(Icons.error, size: 80),
+                  ),
                   title: Text(helper.name),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(helper.description),
-                      Text('DPS: +${helper.dps}', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.green)),
+                      Text(
+                        'DPS: +${helper.dps}',
+                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
+                      ),
                     ],
                   ),
                   trailing: Column(

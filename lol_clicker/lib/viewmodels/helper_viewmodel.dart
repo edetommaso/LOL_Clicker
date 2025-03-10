@@ -20,7 +20,7 @@ class HelperViewModel extends ChangeNotifier {
 
   Future<void> loadHelpers() async {
     _isLoading = true;
-    _errorMessage = null;
+    _errorMessage = null; // Réinitialiser l’erreur au chargement
     notifyListeners();
 
     try {
@@ -39,11 +39,16 @@ class HelperViewModel extends ChangeNotifier {
     if (gameViewModel.coins >= helper.price) {
       gameViewModel.removeCoins(helper.price);
       helper.purchaseCount++;
-      gameViewModel.addHelperDps(helper.dps); // Ajouter les DPS au total
-      _errorMessage = null;
+      gameViewModel.addHelperDps(helper.dps);
+      _errorMessage = null; // Réinitialiser l’erreur après un achat réussi
     } else {
       _errorMessage = 'Pas assez de pièces pour acheter ${helper.name}';
     }
+    notifyListeners();
+  }
+
+  void clearError() {
+    _errorMessage = null; // Méthode pour effacer l’erreur
     notifyListeners();
   }
 }
