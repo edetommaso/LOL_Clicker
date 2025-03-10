@@ -152,8 +152,7 @@ class ShopView extends StatelessWidget {
                           color: canBuy ? Colors.black : Colors.red,
                         ),
                       ),
-                      if (item.purchaseCount > 0)
-                        Text('Acheté: ${item.purchaseCount}'),
+                      Text('Acheté: ${item.purchaseCount}'),
                     ],
                   ),
                   onTap: () {

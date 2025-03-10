@@ -59,9 +59,9 @@ CREATE TABLE `enemy` (
 INSERT INTO `enemy` (`categorie`, `name`, `total_life`, `experience`, `image`) VALUES
 (1, 'Carapateur', 10, 11, 'assets/carap.png'),
 (1, 'Baby Raptor', 20, 14, 'assets/braptor.png'),
-(2,'Red Buff', 30, 18, 'assets/red.png'),
-(2,'Grubs', 40, 22, 'assets/grubs.png'),
-(3,'Captain Teemo', 50, 30, 'assets/teemo.png');
+(2, 'Red Buff', 30, 18, 'assets/red.png'),
+(2, 'Grubs', 40, 22, 'assets/grubs.png'),
+(3, 'Captain Teemo', 50, 30, 'assets/teemo.png');
 
 -- --------------------------------------------------------
 
@@ -74,17 +74,22 @@ CREATE TABLE `items` (
   `name` VARCHAR(50) NOT NULL,
   `description` VARCHAR(500) NOT NULL,
   `price` INT(11) NOT NULL,
-  `image` VARCHAR(500) NOT NULL
+  `image` VARCHAR(500) NOT NULL,
+  `id_type` INT(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `items` (`name`, `description`, `price`, `image`) VALUES
-( 'Long Sword', 'aaa', 35, 'assets/LongSword.png'),
-( 'Caulfield`s Warhammer', 'aaa', 105, 'assets/warhammer.png'),
-( 'Last Whisper', 'aaa', 300, 'assets/whisper.png'),
-( 'B. F. Sword', 'aaa', 650, 'assets/BFSword.png'),
-( 'Kraken Slayer', 'aaa', 800, 'assets/kraken.png'),
-( 'Infinity Edge', 'aaa', 999, 'assets/infinity.png'),
-( 'The Collector', 'aaa', 1500, 'assets/collector.png');
+--
+-- Déchargement des données de la table `items`
+--
+
+INSERT INTO `items` (`name`, `description`, `price`, `image`, `id_type`) VALUES
+('Long Sword', 'aaa', 35, 'assets/items/LongSword.png', 1),
+('Caulfield`s Warhammer', 'aaa', 105, 'assets/items/warhammer.png', 1),
+('Last Whisper', 'aaa', 300, 'assets/items/whisper.png', 1),
+('B. F. Sword', 'aaa', 650, 'assets/items/BFSword.png', 1),
+('Kraken Slayer', 'aaa', 800, 'assets/items/kraken.png', 1),
+('Infinity Edge', 'aaa', 999, 'assets/items/infinity.png', 1),
+('The Collector', 'aaa', 1500, 'assets/items/collector.png', 1);
 
 -- --------------------------------------------------------
 
@@ -106,6 +111,25 @@ CREATE TABLE `player` (
 INSERT INTO `player` (`id_player`, `pseudo`, `total_experience`, `id_ennemy`) VALUES
 (1, 'OmegaZell', 0, 1),
 (2, 'Sparadrap', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `type_items`
+--
+
+CREATE TABLE `type_items` (
+  `id_type` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `type_items`
+--
+
+INSERT INTO `type_items` (`id_type`, `name`) VALUES
+(1, 'damage'),
+(2, 'experience');
 
 -- --------------------------------------------------------
 
@@ -140,7 +164,7 @@ INSERT INTO `users` (`id_user`, `firstname`, `lastname`, `birthdate`) VALUES
 --
 
 ALTER TABLE `buy`
-  ADD PRIMARY KEY (`id_player`,`id_items`),
+  ADD PRIMARY KEY (`id_player`, `id_items`),
   ADD KEY `buy_Items0_FK` (`id_items`);
 
 --
@@ -154,6 +178,7 @@ ALTER TABLE `player`
 --
 -- Index pour la table `users`
 --
+
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id_user`);
 
@@ -164,12 +189,14 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT pour la table `player`
 --
+
 ALTER TABLE `player`
   MODIFY `id_player` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `users`
 --
+
 ALTER TABLE `users`
   MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
@@ -178,8 +205,16 @@ ALTER TABLE `users`
 --
 
 --
+-- Contraintes pour la table `items`
+--
+
+ALTER TABLE `items`
+  ADD CONSTRAINT `items_typeItems_FK` FOREIGN KEY (`id_type`) REFERENCES `type_items` (`id_type`);
+
+--
 -- Contraintes pour la table `buy`
 --
+
 ALTER TABLE `buy`
   ADD CONSTRAINT `buy_Items0_FK` FOREIGN KEY (`id_items`) REFERENCES `items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `buy_Player_FK` FOREIGN KEY (`id_player`) REFERENCES `player` (`id_player`) ON DELETE CASCADE ON UPDATE CASCADE;

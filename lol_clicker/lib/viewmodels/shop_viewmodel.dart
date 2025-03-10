@@ -12,7 +12,6 @@ class ShopViewModel extends ChangeNotifier {
   
   List<ShopItemModel> get items => _items;
   bool get isLoading => _isLoading;
-  
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
   
@@ -24,17 +23,7 @@ class ShopViewModel extends ChangeNotifier {
   // Méthode pour acheter un item
   void buyItem(String itemId, GameViewModel gameViewModel) {
     final item = _items.firstWhere(
-      (item) => item.id == itemId,
-      orElse: () {
-        print("Item non trouvé: $itemId");
-        return ShopItemModel(
-          id: "-1",
-          name: "Unknown",
-          description: "Item not found",
-          price: 9999,
-          image: ""
-        );
-      }
+      (item) => item.id == itemId
     );
     
     if (item.id == "-1") {
@@ -57,6 +46,7 @@ class ShopViewModel extends ChangeNotifier {
     }
     notifyListeners();
   }
+  
 
   // Méthode publique pour charger les items
   Future<void> loadItems() async {

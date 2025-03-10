@@ -11,7 +11,7 @@ class GameBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final gameViewModel = Provider.of<GameViewModel>(context);
     final enemy = gameViewModel.enemy;
-
+    
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

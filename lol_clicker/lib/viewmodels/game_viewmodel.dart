@@ -14,9 +14,11 @@ class GameViewModel extends ChangeNotifier {
   int _damage = 1;
   int _monstersKilled = 0;
   int _coins = 0;
+  int _coin_per_click = 1;
   
   EnemyModel get enemy => _enemy;
   bool get isLoading => _isLoading;
+  int get coin_per_click => _coin_per_click;
   String get error => _error;
   int get damage => _damage;
   int get monstersKilled => _monstersKilled;

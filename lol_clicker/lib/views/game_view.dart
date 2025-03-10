@@ -1,12 +1,11 @@
-// lib/views/game_view.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/game_viewmodel.dart';
 import '../viewmodels/shop_viewmodel.dart';
+import 'package:lol_clicker/widgets/enemy_widgets.dart';
 import '../widgets/shop_button.dart';
 import '../widgets/shop_panel.dart';
 import '../widgets/coin_display.dart';
-import 'game_body.dart';
 
 class GameView extends StatefulWidget {
   const GameView({super.key});
@@ -36,20 +35,19 @@ class _GameViewState extends State<GameView> {
         body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/background.jpg'), // Chemin de l'image
-              fit: BoxFit.cover, // Ajuster l'image pour couvrir tout l'écran
+              image: AssetImage('assets/background.jpg'), // Background image
+              fit: BoxFit.cover, // Cover the entire screen
             ),
           ),
           child: Stack(
             children: [
-              // Corps de la page (le jeu)
+              // Main game content
               Column(
                 children: [
-                  // Header personnalisé avec logo et titre
+                  // Custom header with logo and title
                   Container(
                     padding: const EdgeInsets.all(16),
-                    color: Color.fromARGB(255, 65, 65, 65).withOpacity(
-                        0.7), // Ajouter une opacité pour mieux voir le texte
+                    color: const Color.fromARGB(255, 65, 65, 65).withOpacity(0.7),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -70,51 +68,62 @@ class _GameViewState extends State<GameView> {
                       ],
                     ),
                   ),
-                  // Utilisation de Spacer pour pousser le GameBody vers le bas
-                  const Spacer(),
-                  const GameBody(), // Utilisation de GameBody
+                  const Spacer(), // Push content to the bottom
+                  const EnemyWidgets(), // Enemy widgets
                 ],
               ),
-              // Bouton du shop
+              // Shop button
               ShopButton(onPressed: _toggleShop),
-              // Panneau du shop
+              // Shop panel
               ShopPanel(
                 isShopOpen: _isShopOpen,
                 onClose: _toggleShop,
               ),
-              // Affichage du solde de pièces en bas à gauche
+              // Coin display at the bottom left
               Positioned(
                 left: 16,
-                bottom:
-                    60, // Positionné en bas, avec de l'espace pour le DPS en dessous
+                bottom: 100, // Adjusted to avoid overlap
                 child: Consumer<GameViewModel>(
                   builder: (context, gameViewModel, child) {
                     return CoinDisplay(coins: gameViewModel.coins);
                   },
                 ),
               ),
-              // Affichage du DPS en bas à gauche, en dessous des pièces
-              // lib/views/game_view.dart
+              // Damage/click and Coin/click display at the bottom left
               Positioned(
                 left: 16,
-                bottom: 16, // Positionné en dessous des pièces
+                bottom: 16, // Positioned below the coin display
                 child: Consumer<GameViewModel>(
                   builder: (context, gameViewModel, child) {
                     return Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 65, 65, 65)
-                            .withOpacity(0.5), // Fond semi-transparent
-                        borderRadius: BorderRadius.circular(8), // Bord arrondi
+                        color: const Color.fromARGB(255, 65, 65, 65)
+                            .withOpacity(0.5), // Semi-transparent background
+                        borderRadius: BorderRadius.circular(8), // Rounded corners
                       ),
-                      child: Text(
-                        'DPS: ${gameViewModel.damage}', // Assurez-vous que `dps` est une propriété dans `GameViewModel`
-                        style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Damage/click: ${gameViewModel.damage}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 5), // Spacing between texts
+                          Text(
+                            'Coin/click: ${gameViewModel.coin_per_click}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   },

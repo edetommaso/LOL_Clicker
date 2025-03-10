@@ -16,7 +16,7 @@ class EnemyWidgets extends StatelessWidget {
       children: [
         Text(
             '${enemy.name}',
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
         ),
         Text(
           'Categorie : ${enemy.categorie}',
@@ -24,7 +24,7 @@ class EnemyWidgets extends StatelessWidget {
         ),
         // Compteur de monstres tués
         Text(
-          'Monstres tués: ${gameViewModel.monstersKilled}/10',
+          'Niveau: ${gameViewModel.level} | Monstres tués: ${gameViewModel.monstersKilled}/10',
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 20),
@@ -41,30 +41,24 @@ class EnemyWidgets extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
-        
         // Barre de vie
         SizedBox(
-          width: 300,
+          width: 400,
           child: LinearProgressIndicator(
             value: enemy.currentLife / enemy.totalLife,
             backgroundColor: Colors.red,
             color: Colors.green,
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 20),
         
         // Affichage du niveau et des PV
         Text(
-          'Niveau: ${gameViewModel.level} | PV: ${enemy.currentLife}/${enemy.totalLife}',
+          'PV: ${enemy.currentLife}/${enemy.totalLife}',
           style: const TextStyle(fontSize: 24),
         ),
         const SizedBox(height: 20),
-        
-        // Affichage des dégâts infligés
-        Text(
-          'Dégâts infligés: ${gameViewModel.damage}',
-          style: const TextStyle(fontSize: 20),
-        ),
+      
       ],
     );
   }
