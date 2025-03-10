@@ -133,7 +133,7 @@ class ShopView extends StatelessWidget {
                     children: [
                       Text(item.description),
                       Text(
-                        'DPS: +${item.price ~/ 10}',
+                        'DPS: +${item.price ~/ 20}',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.green,

@@ -44,7 +44,7 @@ class GameViewModel extends ChangeNotifier {
 
   void attackEnemyFromHelper() {
     _enemy.reduceLife(_helperDps);
-    _addCoins(_helperDps);
+    _addCoins(_helperDps ~/ 2);
     if (_enemy.currentLife <= 0) {
       _monstersKilled++;
       _addCoins(_calculateCoinsEarned());
@@ -75,13 +75,13 @@ class GameViewModel extends ChangeNotifier {
   }
   
   int _calculateCoinsEarned() {
-    return (_enemy.experience * _level);
+    return (_enemy.experience * _level ~/ 2);
   }
   
   void attackEnemy() {
     
     _enemy.reduceLife(_damage);
-    _addCoins(_damage);
+    _addCoins(_coin_per_click);
     
     if (_enemy.currentLife <= 0) {
       _monstersKilled++;

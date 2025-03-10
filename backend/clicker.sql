@@ -235,8 +235,15 @@ CREATE TABLE helpers (
     dps INT NOT NULL
 );
 
--- Exemples de données
+-- Insertions triées par prix croissant, uniquement des champions LoL
 INSERT INTO helpers (name, description, price, image, dps) VALUES
-('Guerrier', 'Un guerrier robuste qui frappe fort.', 50, 'https://example.com/warrior.png', 5),
-('Mage', 'Un mage lançant des sorts puissants.', 100, 'https://example.com/mage.png', 10),
-('Archer', 'Un archer précis et rapide.', 75, 'https://example.com/archer.png', 7);
+('Ashe', 'L’archère de givre tire des flèches précises.', 250, 'assets/helpers/ashe.png', 1),
+('Garen', 'Un guerrier robuste avec son épée tournoyante.', 400, 'assets/helpers/garen.png', 2),
+('Lux', 'Une mage lumineuse lançant des éclairs.', 600, 'assets/helpers/lux.png', 3),
+('Darius', 'Le bourreau de Noxus tranche ses ennemis.', 900, 'assets/helpers/darius.png', 4),
+('Ahri', 'La renarde charmeuse inflige des dégâts magiques.', 1200, 'assets/helpers/ahri.png', 5),
+('Yasuo', 'Le samouraï du vent coupe tout sur son passage.', 1600, 'assets/helpers/yasuo.png', 6),
+('Akali', 'La ninja furtive frappe dans l’ombre.', 2000, 'assets/helpers/akali.png', 7),
+('Thresh', 'Le gardien des chaînes torture ses proies.', 2500, 'assets/helpers/thresh.png', 8),
+('Jinx', 'L’artilleuse folle mitraille sans relâche.', 3000, 'assets/helpers/jinx.png', 10),
+('Zed', 'Le maître des ombres assassine en silence.', 4000, 'assets/helpers/zed.png', 12);

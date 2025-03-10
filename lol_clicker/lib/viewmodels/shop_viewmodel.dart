@@ -39,7 +39,7 @@ class ShopViewModel extends ChangeNotifier {
       _errorMessage = null;
       
       // Mettre à jour le DPS
-      gameViewModel.updateDps(gameViewModel.damage + (item.price ~/ 10)); 
+      gameViewModel.updateDps(gameViewModel.damage + (item.price ~/ 20));
       print('Item acheté: ${item.name} (Acheté ${item.purchaseCount} fois)');
     } else {
       _errorMessage = 'Pas assez de pièces pour acheter ${item.name}';
