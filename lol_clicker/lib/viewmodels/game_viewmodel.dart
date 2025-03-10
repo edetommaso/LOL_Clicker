@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/ennemy_model.dart';
 import '../core/services/enemy_service.dart';
+import 'dart:async';
 
 class GameViewModel extends ChangeNotifier {
 
@@ -15,6 +16,8 @@ class GameViewModel extends ChangeNotifier {
   int _monstersKilled = 0;
   int _coins = 0;
   int _coin_per_click = 1;
+  int _helperDps = 0;
+  Timer? _autoAttackTimer;
   
   EnemyModel get enemy => _enemy;
   bool get isLoading => _isLoading;
@@ -24,9 +27,42 @@ class GameViewModel extends ChangeNotifier {
   int get monstersKilled => _monstersKilled;
   int get coins => _coins;
   int get level => _level;
+  int get helperDps => _helperDps;
   
   GameViewModel(){
     fetchEnemies();
+    _startAutoAttack();
+  }
+
+  void _startAutoAttack() {
+    _autoAttackTimer = Timer.periodic(Duration(seconds: 3), (timer) {
+      if (_helperDps > 0) {
+        attackEnemyFromHelper();
+      }
+    });
+  }
+
+  void attackEnemyFromHelper() {
+    _enemy.reduceLife(_helperDps);
+    _addCoins(_helperDps);
+    if (_enemy.currentLife <= 0) {
+      _monstersKilled++;
+      _addCoins(_calculateCoinsEarned());
+      _enemy.currentLife = _enemy.totalLife;
+      _spawnNewEnemy();
+    }
+    notifyListeners();
+  }
+
+  void addHelperDps(int dps) {
+    _helperDps += dps;
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _autoAttackTimer?.cancel();
+    super.dispose();
   }
     
   int _calculateTotalLife() {

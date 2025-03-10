@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lol_clicker/viewmodels/helper_viewmodel.dart';
+import 'package:lol_clicker/widgets/helper_button.dart';
+import 'package:lol_clicker/widgets/helper_panel.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/game_viewmodel.dart';
 import '../viewmodels/shop_viewmodel.dart';
@@ -14,12 +17,20 @@ class GameView extends StatefulWidget {
   State<GameView> createState() => _GameViewState();
 }
 
+// lib/views/game_view.dart
 class _GameViewState extends State<GameView> {
   bool _isShopOpen = false;
+  bool _isHelperOpen = false; // Nouvelle variable
 
   void _toggleShop() {
     setState(() {
       _isShopOpen = !_isShopOpen;
+    });
+  }
+
+  void _toggleHelpers() {
+    setState(() {
+      _isHelperOpen = !_isHelperOpen;
     });
   }
 
@@ -29,100 +40,61 @@ class _GameViewState extends State<GameView> {
       providers: [
         ChangeNotifierProvider(create: (context) => GameViewModel()),
         ChangeNotifierProvider(create: (context) => ShopViewModel()),
+        ChangeNotifierProvider(create: (context) => HelperViewModel()), // Ajouter le HelperViewModel
       ],
       child: Scaffold(
-        appBar: null,
         body: Container(
           decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/background.jpg'), // Background image
-              fit: BoxFit.cover, // Cover the entire screen
-            ),
+            image: DecorationImage(image: AssetImage('assets/background.jpg'), fit: BoxFit.cover),
           ),
           child: Stack(
             children: [
-              // Main game content
               Column(
                 children: [
-                  // Custom header with logo and title
                   Container(
                     padding: const EdgeInsets.all(16),
                     color: const Color.fromARGB(255, 65, 65, 65).withOpacity(0.7),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset(
-                          'assets/logo.png',
-                          width: 150,
-                          height: 100,
-                        ),
+                        Image.asset('assets/logo.png', width: 150, height: 100),
                         const SizedBox(width: 10),
-                        const Text(
-                          'League of Clicker',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
+                        const Text('League of Clicker', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
                       ],
                     ),
                   ),
-                  const Spacer(), // Push content to the bottom
-                  const EnemyWidgets(), // Enemy widgets
+                  const Spacer(),
+                  const EnemyWidgets(),
                 ],
               ),
-              // Shop button
               ShopButton(onPressed: _toggleShop),
-              // Shop panel
-              ShopPanel(
-                isShopOpen: _isShopOpen,
-                onClose: _toggleShop,
-              ),
-              // Coin display at the bottom left
+              HelperButton(onPressed: _toggleHelpers), // Ajouter le bouton
+              ShopPanel(isShopOpen: _isShopOpen, onClose: _toggleShop),
+              HelperPanel(isHelperOpen: _isHelperOpen, onClose: _toggleHelpers), // Ajouter le panneau
               Positioned(
                 left: 16,
-                bottom: 100, // Adjusted to avoid overlap
+                bottom: 100,
                 child: Consumer<GameViewModel>(
-                  builder: (context, gameViewModel, child) {
-                    return CoinDisplay(coins: gameViewModel.coins);
-                  },
+                  builder: (context, gameViewModel, child) => CoinDisplay(coins: gameViewModel.coins),
                 ),
               ),
-              // Damage/click and Coin/click display at the bottom left
               Positioned(
                 left: 16,
-                bottom: 16, // Positioned below the coin display
+                bottom: 16,
                 child: Consumer<GameViewModel>(
                   builder: (context, gameViewModel, child) {
                     return Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 65, 65, 65)
-                            .withOpacity(0.5), // Semi-transparent background
-                        borderRadius: BorderRadius.circular(8), // Rounded corners
+                        color: const Color.fromARGB(255, 65, 65, 65).withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Damage/click: ${gameViewModel.damage}',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 5), // Spacing between texts
-                          Text(
-                            'Coin/click: ${gameViewModel.coin_per_click}',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          Text('Damage/click: ${gameViewModel.damage}', style: const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold)),
+                          Text('Coin/click: ${gameViewModel.coin_per_click}', style: const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold)),
+                          Text('Helper DPS: ${gameViewModel.helperDps}', style: const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold)), // Afficher les DPS des helpers
                         ],
                       ),
                     );

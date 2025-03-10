@@ -225,3 +225,18 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+CREATE TABLE helpers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price INT NOT NULL,
+    image VARCHAR(255),
+    dps INT NOT NULL
+);
+
+-- Exemples de données
+INSERT INTO helpers (name, description, price, image, dps) VALUES
+('Guerrier', 'Un guerrier robuste qui frappe fort.', 50, 'https://example.com/warrior.png', 5),
+('Mage', 'Un mage lançant des sorts puissants.', 100, 'https://example.com/mage.png', 10),
+('Archer', 'Un archer précis et rapide.', 75, 'https://example.com/archer.png', 7);
