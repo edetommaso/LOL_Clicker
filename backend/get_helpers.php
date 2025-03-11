@@ -2,11 +2,9 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-// Inclure le fichier de connexion existant
 include 'db.php';
 
 try {
-    // Utiliser la variable $db définie dans db.php
     $sql = "SELECT * FROM helpers";
     $stmt = $db->prepare($sql);
     $stmt->execute();

@@ -1,4 +1,3 @@
-// lib/viewmodels/shop_viewmodel.dart
 import 'package:flutter/material.dart';
 import 'package:lol_clicker/core/services/shop_item_service.dart';
 import '../models/shop_item_model.dart';
@@ -14,12 +13,10 @@ class ShopViewModel extends ChangeNotifier {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
   
-  // Constructeur avec chargement des items
   ShopViewModel() {
     loadItems();
   }
   
-  // Méthode pour acheter un item
   void buyItem(String itemId, GameViewModel gameViewModel) {
     final item = _items.firstWhere(
       (item) => item.id == itemId
@@ -32,12 +29,10 @@ class ShopViewModel extends ChangeNotifier {
     }
     
     if (gameViewModel.coins >= item.price) {
-      // Retirer le prix de l'item des pièces du joueur
       gameViewModel.removeCoins(item.price);
       item.purchaseCount++; 
       _errorMessage = null;
       
-      // Mettre à jour le DPC
       if(item.typeAmelioration=='damage'){
       gameViewModel.updateDps((item.price ~/ 20)); 
       }else{
@@ -50,8 +45,6 @@ class ShopViewModel extends ChangeNotifier {
     notifyListeners();
   }
   
-
-  // Méthode publique pour charger les items
   Future<void> loadItems() async {
     _isLoading = true;
     _errorMessage = null;
@@ -59,10 +52,9 @@ class ShopViewModel extends ChangeNotifier {
     
     try {
       print("Chargement des items...");
-      _items = await _itemRequest.getShopItems(); // Utiliser la méthode correcte
+      _items = await _itemRequest.getShopItems();
       print("Items chargés: ${_items.length}");
       
-      // Pour le débogage
       for (var item in _items) {
         print("Item: ${item.name}, prix: ${item.price}, image: ${item.image}");
       }

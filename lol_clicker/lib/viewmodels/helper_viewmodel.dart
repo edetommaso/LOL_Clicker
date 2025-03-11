@@ -1,4 +1,3 @@
-// lib/viewmodels/helper_viewmodel.dart
 import 'package:flutter/material.dart';
 import 'package:lol_clicker/core/services/helper_service.dart';
 import '../models/helper_model.dart';
@@ -20,7 +19,7 @@ class HelperViewModel extends ChangeNotifier {
 
   Future<void> loadHelpers() async {
     _isLoading = true;
-    _errorMessage = null; // Réinitialiser l’erreur au chargement
+    _errorMessage = null;
     notifyListeners();
 
     try {
@@ -40,7 +39,7 @@ class HelperViewModel extends ChangeNotifier {
       gameViewModel.removeCoins(helper.price);
       helper.purchaseCount++;
       gameViewModel.addHelperDps(helper.dps);
-      _errorMessage = null; // Réinitialiser l’erreur après un achat réussi
+      _errorMessage = null;
     } else {
       _errorMessage = 'Pas assez de pièces pour acheter ${helper.name}';
     }
@@ -48,7 +47,7 @@ class HelperViewModel extends ChangeNotifier {
   }
 
   void clearError() {
-    _errorMessage = null; // Méthode pour effacer l’erreur
+    _errorMessage = null; 
     notifyListeners();
   }
 }

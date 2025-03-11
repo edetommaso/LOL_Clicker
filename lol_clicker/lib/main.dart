@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lol_clicker/views/game_view.dart'; // Nouvelle vue pour le jeu
+import 'package:lol_clicker/views/game_view.dart';
 import 'package:provider/provider.dart';
 import 'core/config/config.dart';
 import 'viewmodels/user_viewmodel.dart';

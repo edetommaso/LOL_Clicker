@@ -1,4 +1,3 @@
-// lib/widgets/helper_panel.dart
 import 'package:flutter/material.dart';
 import '../views/helper_view.dart';
 
@@ -16,7 +15,7 @@ class HelperPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedPositioned(
       duration: const Duration(milliseconds: 300),
-      left: isHelperOpen ? 0 : -300, // Défilement à gauche
+      left: isHelperOpen ? 0 : -300,
       top: 0,
       bottom: 0,
       width: 300,

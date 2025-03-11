@@ -27,10 +27,10 @@ class EnemyModel {
       id: json['id'] ?? 0,
       name: json['name'] as String? ?? 'Nom inconnu',
       intialLife: json['total_life'] as int,
-      totalLife: json['total_life'] as int? ?? 100, // Valeur par défaut pour totalLife
+      totalLife: json['total_life'] as int? ?? 100,
       categorie: json['categorie'] as int? ?? 1,
-      experience: json['experience'] as int? ?? 0, // Valeur par défaut pour experience
-      image: json['image'] as String? ?? 'default_image.png', // Valeur par défaut pour image
+      experience: json['experience'] as int? ?? 0,
+      image: json['image'] as String? ?? 'default_image.png',
     );
   }
   

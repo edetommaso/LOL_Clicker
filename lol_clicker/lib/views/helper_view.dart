@@ -1,4 +1,3 @@
-// lib/views/helper_view.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/helper_viewmodel.dart';
@@ -25,7 +24,6 @@ class HelperView extends StatelessWidget {
       );
     }
 
-    // Afficher un message d'erreur avec bouton Réessayer si nécessaire
     if (helperViewModel.errorMessage != null) {
       return Center(
         child: Column(
@@ -39,7 +37,7 @@ class HelperView extends StatelessWidget {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                helperViewModel.clearError(); // Effacer l’erreur et revenir à la liste
+                helperViewModel.clearError();
               },
               child: const Text('Réessayer'),
             ),
@@ -71,8 +69,8 @@ class HelperView extends StatelessWidget {
                 child: ListTile(
                   leading: Image.network(
                     helper.image,
-                    width: 80,  // Image agrandie
-                    height: 80, // Image agrandie
+                    width: 80, 
+                    height: 80,
                     errorBuilder: (_, __, ___) => const Icon(Icons.error, size: 80),
                   ),
                   title: Text(helper.name),

@@ -1,12 +1,11 @@
-// lib/models/helper_model.dart
 class HelperModel {
   final String id;
   final String name;
   final String description;
-  final int price; // Prix en coins pour acheter le helper
+  final int price; 
   final String image;
-  final int dps; // Dégâts par seconde infligés par le helper
-  int purchaseCount; // Nombre de fois que ce helper a été acheté
+  final int dps;
+  int purchaseCount;
 
   HelperModel({
     required this.id,

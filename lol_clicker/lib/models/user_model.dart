@@ -6,21 +6,13 @@ class UserModel {
   final String firstname;
   final String birthdate;
   
-  // Constructeur classique
   UserModel({
     required this.id,
     required this.lastname,
     required this.firstname,
     required this.birthdate,
   });
-  
-  /*
-   * Un factory en Flutter est un constructeur particulier qui permet
-   * de créer des objets en effectuant des traitements et
-   * des vérifications supplémentaires sur les paramètres
-   * avant l'instanciation de notre objet.
-   * Ici, on convertit les données Json de notre api en objet User
-   */
+
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['id_user'] ?? 0,
@@ -29,11 +21,6 @@ class UserModel {
       birthdate: json['birthdate'] ?? 'Date inconnue',
     );
   }
-  
-  /*
-   * Getter qui permet de récupérer l'âge d'une personne
-   * à partir de sa date de naissance
-   */
 
   int get age {
     try {

@@ -11,7 +11,7 @@ class GameViewModel extends ChangeNotifier {
   
   bool _isLoading = false;
   String _error = '';
-  int _level = 1; // Increment des niveaux de monstres qui sera incrementer tous les 10 monstres tuées
+  int _level = 1;
   int _damage = 1;
   int _monstersKilled = 0;
   int _coins = 0;
@@ -107,16 +107,13 @@ class GameViewModel extends ChangeNotifier {
         _enemy = _enemies.first;
       }
       
-      // Incrémenter le niveau si 10 monstres ont été tués
       if (_monstersKilled % 10 == 0) {
         _monstersKilled = 0;
         _level += 1;
         
-        // Mettre à jour la vie de l'ennemi en fonction du nouveau niveau
         _enemy.totalLife = _calculateTotalLife();
         _enemy.currentLife = _enemy.totalLife;
       } else {
-        // Mettre à jour la vie de l'ennemi en fonction du niveau actuel
         _enemy.totalLife = _calculateTotalLife();
         _enemy.currentLife = _enemy.totalLife;
       }
@@ -129,8 +126,6 @@ class GameViewModel extends ChangeNotifier {
 
   }
   
-  
-  
   Future<void> fetchEnemies() async {
     _isLoading = true;
     _error = '';
@@ -140,8 +135,6 @@ class GameViewModel extends ChangeNotifier {
       if (enemies.isNotEmpty) {
         _enemies = enemies;
         _enemy = enemies.first;
-        
-        // Mettre à jour la vie de l'ennemi en fonction du niveau
         _enemy.totalLife = _calculateTotalLife();
         _enemy.currentLife = _enemy.totalLife;
       } else {
@@ -164,7 +157,6 @@ class GameViewModel extends ChangeNotifier {
       EnemyModel? fetchedEnemy = await _enemyRequest.getEnemyById(id);
       if (fetchedEnemy != null) {
         _enemy = fetchedEnemy;
-        // Mettre à jour la vie de l'ennemi en fonction du niveau
         _enemy.totalLife = _calculateTotalLife();
         _enemy.currentLife = _enemy.totalLife;
 
@@ -181,11 +173,10 @@ class GameViewModel extends ChangeNotifier {
   }
     
     void removeCoins(int amount) {
-    _coins -= amount; // Retirer des pièces
+    _coins -= amount;
     notifyListeners();
   }
   
-  // lib/viewmodels/game_viewmodel.dart
   void updateDps(int newDps) {
     _damage += newDps;
     notifyListeners();

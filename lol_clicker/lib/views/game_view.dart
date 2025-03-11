@@ -17,10 +17,9 @@ class GameView extends StatefulWidget {
   State<GameView> createState() => _GameViewState();
 }
 
-// lib/views/game_view.dart
 class _GameViewState extends State<GameView> {
   bool _isShopOpen = false;
-  bool _isHelperOpen = false; // Nouvelle variable
+  bool _isHelperOpen = false; 
 
   void _toggleShop() {
     setState(() {
@@ -40,7 +39,7 @@ class _GameViewState extends State<GameView> {
       providers: [
         ChangeNotifierProvider(create: (context) => GameViewModel()),
         ChangeNotifierProvider(create: (context) => ShopViewModel()),
-        ChangeNotifierProvider(create: (context) => HelperViewModel()), // Ajouter le HelperViewModel
+        ChangeNotifierProvider(create: (context) => HelperViewModel()),
       ],
       child: Scaffold(
         body: Container(
@@ -71,9 +70,9 @@ class _GameViewState extends State<GameView> {
                 ],
               ),
               ShopButton(onPressed: _toggleShop),
-              HelperButton(onPressed: _toggleHelpers), // Ajouter le bouton
+              HelperButton(onPressed: _toggleHelpers), 
               ShopPanel(isShopOpen: _isShopOpen, onClose: _toggleShop),
-              HelperPanel(isHelperOpen: _isHelperOpen, onClose: _toggleHelpers), // Ajouter le panneau
+              HelperPanel(isHelperOpen: _isHelperOpen, onClose: _toggleHelpers), 
               Positioned(
                 left: 16,
                 bottom: 100,

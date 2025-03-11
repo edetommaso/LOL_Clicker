@@ -1,21 +1,18 @@
 <?php
 require_once('db.php');
 
-// Autoriser seulement les requêtes POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(["error" => "Méthode non autorisée"]);
     exit;
 }
 
-// Lire et décoder les données JSON envoyées
 $data = json_decode(file_get_contents("php://input"), true);
 if (!$data) {
     echo json_encode(["error" => "Données JSON invalides"]);
     exit;
 }
 
-// Vérifier si l'action est définie
 if (!isset($data['action'])) {
     echo json_encode(["error" => "Aucune action spécifiée"]);
     exit;

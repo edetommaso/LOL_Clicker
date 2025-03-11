@@ -1,4 +1,3 @@
-// lib/widgets/shop_panel.dart
 import 'package:flutter/material.dart';
 import '../views/shop_view.dart';
 
@@ -16,7 +15,7 @@ class ShopPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedPositioned(
       duration: const Duration(milliseconds: 300),
-      right: isShopOpen ? 0 : -300, // Défilement de la fenêtre
+      right: isShopOpen ? 0 : -300,
       top: 0,
       bottom: 0,
       width: 300,
@@ -24,9 +23,7 @@ class ShopPanel extends StatelessWidget {
         elevation: 8,
         child: Stack(
           children: [
-            // Contenu du shop
             ShopView(),
-            // Bouton de fermeture en haut à droite
             Positioned(
               right: 8,
               top: 8,

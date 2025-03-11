@@ -3,12 +3,7 @@ import 'api_service.dart';
 
 class ShopItemRequest {
   final ApiService apiService = ApiService();
-  
-  /*---------------------*/
-  /* Lectures de données */
-  /*---------------------*/
-  
-  // Récupérer la liste complète des ennemis
+
   Future<List<ShopItemModel>> getShopItems() async {
     List<dynamic> data = await apiService.getRequest("get_items.php");
     return data.map((items) => ShopItemModel.fromJson(items)).toList();

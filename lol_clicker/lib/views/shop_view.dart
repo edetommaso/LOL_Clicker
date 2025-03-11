@@ -1,4 +1,3 @@
-// lib/views/shop_view.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/shop_viewmodel.dart';
@@ -12,12 +11,10 @@ class ShopView extends StatelessWidget {
     final shopViewModel = Provider.of<ShopViewModel>(context);
     final gameViewModel = Provider.of<GameViewModel>(context);
 
-    // Si les items n'ont pas été chargés, essayer de les charger
     if (shopViewModel.items.isEmpty && !shopViewModel.isLoading && shopViewModel.errorMessage == null) {
       Future.microtask(() => shopViewModel.loadItems());
     }
     
-    // Afficher un indicateur de chargement si nécessaire
     if (shopViewModel.isLoading) {
       return const Center(
         child: Column(
@@ -31,7 +28,6 @@ class ShopView extends StatelessWidget {
       );
     }
     
-    // Afficher un message d'erreur s'il y en a un
     if (shopViewModel.errorMessage != null) {
       return Center(
         child: Column(
@@ -52,7 +48,6 @@ class ShopView extends StatelessWidget {
       );
     }
 
-    // Si aucun item n'est disponible
     if (shopViewModel.items.isEmpty) {
       return Center(
         child: Column(
@@ -72,7 +67,6 @@ class ShopView extends StatelessWidget {
       );
     }
 
-    // Afficher la liste des items
     return Column(
       children: [
         const Padding(
@@ -85,7 +79,6 @@ class ShopView extends StatelessWidget {
             ),
           ),
         ),
-        // Afficher le message d'erreur pour l'achat si présent
         if (shopViewModel.errorMessage != null)
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -95,7 +88,6 @@ class ShopView extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-        // Solde actuel
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
@@ -106,7 +98,6 @@ class ShopView extends StatelessWidget {
             ),
           ),
         ),
-        // Liste des items
         Expanded(
           child: ListView.builder(
             itemCount: shopViewModel.items.length,

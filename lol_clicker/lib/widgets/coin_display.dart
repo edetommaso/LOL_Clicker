@@ -1,4 +1,3 @@
-// lib/widgets/coin_display.dart
 import 'package:flutter/material.dart';
 
 class CoinDisplay extends StatelessWidget {

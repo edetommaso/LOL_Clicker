@@ -8,17 +8,11 @@ class UserViewModel extends ChangeNotifier {
   String _error = '';
   List<UserModel> get users => _users;
   
-  // La variable isLoading nous permet de mettre un état de chargement de nos données en attendant qu'elles s'affichent.
   bool get isLoading => _isLoading;
   String get errorMessage => _error;
 
   List<UserModel> _filteredUsers = [];
   List<UserModel> get filteredUsers => _filteredUsers;
-  
-  /*---------------------*/
-  /* Lectures de données */
-  /*---------------------*/
-
 
   Future<void> fetchUsers() async {
     _isLoading = true;
@@ -79,11 +73,6 @@ class UserViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /*---------------------*/
-  /* Ecriture de données */
-  /*---------------------*/
-
-  /* Méthode qui permet d'insérer des données en base */
   Future<void> addUser(String firstname, String lastname, String birthdate) async {
     try {
       await _userRequest.insertUser(firstname, lastname, birthdate);
@@ -94,7 +83,6 @@ class UserViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /* Méthode qui permet de modifier des données en base */
   Future<void> updateUser(int id, {String? firstname, String? lastname, String? birthdate}) async {
     try {
       await _userRequest.updateUser(id, firstname: firstname, lastname: lastname, birthdate: birthdate);
@@ -105,7 +93,6 @@ class UserViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /* Méthode qui permet de supprimer des données en base */
   Future<void> deleteUser(int id) async {
     try {
       await _userRequest.deleteUser(id);

@@ -1,4 +1,3 @@
-// lib/widgets/shop_button.dart
 import 'package:flutter/material.dart';
 
 class ShopButton extends StatelessWidget {

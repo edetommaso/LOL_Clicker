@@ -1,4 +1,3 @@
-// lib/widgets/enemy_widgets.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/game_viewmodel.dart';
@@ -12,13 +11,12 @@ class EnemyWidgets extends StatefulWidget {
 }
 
 class _EnemyWidgetsState extends State<EnemyWidgets> {
-  bool _showClaw = false; // Contrôle l’affichage de la griffure
+  bool _showClaw = false; 
 
   void _showClawEffect() {
     setState(() {
-      _showClaw = true; // Afficher la griffure
+      _showClaw = true; 
     });
-    // Faire disparaître la griffure après 500 ms
     Timer(const Duration(milliseconds: 500), () {
       if (mounted) {
         setState(() {
@@ -49,26 +47,25 @@ class _EnemyWidgetsState extends State<EnemyWidgets> {
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 20),
-        // Image du monstre avec superposition de la griffure
         GestureDetector(
           onTap: () {
-            gameViewModel.attackEnemy(); // Infliger les dégâts
-            _showClawEffect(); // Afficher la griffure
+            gameViewModel.attackEnemy();
+            _showClawEffect(); 
           },
           child: Stack(
-            alignment: Alignment.center, // Centrer la griffure
+            alignment: Alignment.center,
             children: [
               Image.asset(
                 enemy.image,
                 width: 300,
                 height: 300,
               ),
-              if (_showClaw) // Afficher la griffure si _showClaw est vrai
+              if (_showClaw) 
                 Image.asset(
-                  'assets/scratch.png', // Assure-toi que cette image existe
+                  'assets/scratch.png', 
                   width: 300,
                   height: 300,
-                  color: Colors.red.withOpacity(0.7), // Teinte rouge et transparence
+                  color: Colors.red.withOpacity(0.7),
                 ),
             ],
           ),
