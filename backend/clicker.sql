@@ -57,11 +57,17 @@ CREATE TABLE `enemy` (
 --
 
 INSERT INTO `enemy` (`categorie`, `name`, `total_life`, `experience`, `image`) VALUES
-(1, 'Carapateur', 10, 11, 'assets/carap.png'),
+(1, 'Carapateur', 15, 11, 'assets/carap.png'),
 (1, 'Baby Raptor', 20, 14, 'assets/braptor.png'),
 (2, 'Red Buff', 30, 18, 'assets/red.png'),
 (2, 'Grubs', 40, 22, 'assets/grubs.png'),
-(3, 'Captain Teemo', 50, 30, 'assets/teemo.png');
+(3, 'Captain Teemo', 100, 30, 'assets/teemo.png'),
+(1, 'Gromp', 40, 14, 'assets/gromp.png'),
+(2, 'Blue Buff', 40, 30, 'assets/blue.png'),
+(2, 'Raptor', 40, 22, 'assets/raptor.png'),
+(2, 'Blue Buff Upgraded', 80, 45, 'assets/blueU.png'),
+(3, 'Heimerdinger', 120 , 50, 'assets/heimer.png'),
+(3, 'Herald', 200, 50, 'assets/herald.png');
 
 -- --------------------------------------------------------
 
@@ -89,7 +95,10 @@ INSERT INTO `items` (`name`, `description`, `price`, `image`, `id_type`) VALUES
 ('B. F. Sword', 'DPC', 650, 'assets/items/BFSword.png', 1),
 ('Kraken Slayer', 'DPC', 800, 'assets/items/kraken.png', 1),
 ('Infinity Edge', 'DPC', 999, 'assets/items/infinity.png', 1),
-('The Collector', 'DPC', 1500, 'assets/items/collector.png', 1);
+('The Collector', 'DPC', 1500, 'assets/items/collector.png', 1),
+('Ancient Coin', 'CPC', 300, 'assets/items/ancient.png', 2),
+('Gambler s Blade', 'CPC', 650, 'assets/items/gamblers.png', 2),
+('Zhonya s Hourglass', 'CPC', 800, 'assets/items/zhonyas.png', 2);
 
 -- --------------------------------------------------------
 

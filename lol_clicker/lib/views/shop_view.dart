@@ -6,7 +6,7 @@ import '../viewmodels/game_viewmodel.dart';
 
 class ShopView extends StatelessWidget {
   const ShopView({Key? key}) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     final shopViewModel = Provider.of<ShopViewModel>(context);
@@ -16,7 +16,7 @@ class ShopView extends StatelessWidget {
     if (shopViewModel.items.isEmpty && !shopViewModel.isLoading && shopViewModel.errorMessage == null) {
       Future.microtask(() => shopViewModel.loadItems());
     }
-
+    
     // Afficher un indicateur de chargement si nécessaire
     if (shopViewModel.isLoading) {
       return const Center(
@@ -131,9 +131,8 @@ class ShopView extends StatelessWidget {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(item.description),
                       Text(
-                        'DPS: +${item.price ~/ 20}',
+                        '${item.description}: +${item.price ~/ 20}',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.green,
