@@ -11,7 +11,7 @@ Future main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -19,12 +19,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UserViewModel()),
       ],
       child: MaterialApp(
-        title: 'Clicker',
+        title: 'League of Clicker',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const GameView(), // Changer HomeView par GameView
+        home: const GameView(),
       ),
     );
   }

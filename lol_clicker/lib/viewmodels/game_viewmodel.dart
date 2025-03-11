@@ -1,54 +1,200 @@
 import 'package:flutter/material.dart';
 import '../models/ennemy_model.dart';
+import '../core/services/enemy_service.dart';
+import 'dart:async';
 
 class GameViewModel extends ChangeNotifier {
-  EnemyModel _enemy = EnemyModel(name: 'Monstre', totalLife: 100, level: 1);
-  int _lastDamage = 0;
-  int _monstersKilled = 0; // Compteur de monstres tués
 
+  final EnemyRequest _enemyRequest = EnemyRequest();
+  List<EnemyModel> _enemies = [];
+  late EnemyModel _enemy;
+  
+  bool _isLoading = false;
+  String _error = '';
+  int _level = 1; // Increment des niveaux de monstres qui sera incrementer tous les 10 monstres tuées
+  int _damage = 1;
+  int _monstersKilled = 0;
+  int _coins = 0;
+  int _coin_per_click = 1;
+  int _helperDps = 0;
+  Timer? _autoAttackTimer;
+  
   EnemyModel get enemy => _enemy;
-  int get lastDamage => _lastDamage;
+  bool get isLoading => _isLoading;
+  int get coin_per_click => _coin_per_click;
+  String get error => _error;
+  int get damage => _damage;
   int get monstersKilled => _monstersKilled;
+  int get coins => _coins;
+  int get level => _level;
+  int get helperDps => _helperDps;
+  
+  GameViewModel(){
+    fetchEnemies();
+    _startAutoAttack();
+  }
 
-  void attackEnemy() {
-    _lastDamage = 10; // Dégâts fixes pour l'exemple
-    _enemy.reduceLife(_lastDamage);
+  void _startAutoAttack() {
+    _autoAttackTimer = Timer.periodic(Duration(seconds: 3), (timer) {
+      if (_helperDps > 0) {
+        attackEnemyFromHelper();
+      }
+    });
+  }
 
-    // Vérifier si l'ennemi est mort
+  void attackEnemyFromHelper() {
+    _enemy.reduceLife(_helperDps);
+    _addCoins(_helperDps ~/ 2);
     if (_enemy.currentLife <= 0) {
-      _monstersKilled++; // Incrémenter le compteur de monstres tués
+      _monstersKilled++;
+      _addCoins(_calculateCoinsEarned());
+      _enemy.currentLife = _enemy.totalLife;
       _spawnNewEnemy();
     }
-
     notifyListeners();
   }
 
-  void _spawnNewEnemy() {
-    // Vérifier si 10 monstres ont été tués pour augmenter le niveau
-    if (_monstersKilled >= 10) {
-      _enemy = EnemyModel(
-        name: 'Monstre',
-        totalLife: _enemy.totalLife + 50, // Augmenter les PV de 50
-        level: _enemy.level + 1, // Augmenter le niveau de 1
-      );
-      _monstersKilled = 0; // Réinitialiser le compteur
-    } else {
-      // Sinon, créer un nouvel ennemi avec les mêmes caractéristiques
-      _enemy = EnemyModel(
-        name: 'Monstre',
-        totalLife: _enemy.totalLife,
-        level: _enemy.level,
-      );
+  void addHelperDps(int dps) {
+    _helperDps += dps;
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _autoAttackTimer?.cancel();
+    super.dispose();
+  }
+    
+  int _calculateTotalLife() {
+    return (_level *_level* _enemy.intialLife);
+  }
+  
+  int _calculateCoinsEarned() {
+    return (_enemy.experience * _level ~/ 2);
+  }
+  
+  void attackEnemy() {
+    
+    _enemy.reduceLife(_damage);
+    _addCoins(_coin_per_click);
+    
+    if (_enemy.currentLife <= 0) {
+      _monstersKilled++;
+      _addCoins(_calculateCoinsEarned());
+      _enemy.currentLife = _enemy.totalLife;
+      _spawnNewEnemy();
+    }
+    notifyListeners();
+  
+  }
+  
+  void _addCoins(int amount) {
+    _coins += amount;
+    notifyListeners();
+  }
+  
+  Future<void> _spawnNewEnemy() async {
+    
+    try {
+      _isLoading = true;
+      notifyListeners();
+      
+      int currentIndex = _enemies.indexWhere((enemy) => enemy.id == _enemy.id);
+      
+      if (currentIndex != -1 && currentIndex + 1 < _enemies.length) {
+        _enemy = _enemies[currentIndex + 1];
+      } else {
+        _enemy = _enemies.first;
+      }
+      
+      // Incrémenter le niveau si 10 monstres ont été tués
+      if (_monstersKilled % 10 == 0) {
+        _monstersKilled = 0;
+        _level += 1;
+        
+        // Mettre à jour la vie de l'ennemi en fonction du nouveau niveau
+        _enemy.totalLife = _calculateTotalLife();
+        _enemy.currentLife = _enemy.totalLife;
+      } else {
+        // Mettre à jour la vie de l'ennemi en fonction du niveau actuel
+        _enemy.totalLife = _calculateTotalLife();
+        _enemy.currentLife = _enemy.totalLife;
+      }
+    } catch (e) {
+      _error = 'Error spawning new enemy: $e';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
 
-    // Réinitialiser les dégâts infligés
-    _lastDamage = 0;
   }
+  
+  
+  
+  Future<void> fetchEnemies() async {
+    _isLoading = true;
+    _error = '';
+    notifyListeners();
+    try {
+      List<EnemyModel> enemies = await _enemyRequest.getEnemies();
+      if (enemies.isNotEmpty) {
+        _enemies = enemies;
+        _enemy = enemies.first;
+        
+        // Mettre à jour la vie de l'ennemi en fonction du niveau
+        _enemy.totalLife = _calculateTotalLife();
+        _enemy.currentLife = _enemy.totalLife;
+      } else {
+        _error = 'No enemies found';
+      }
+    } catch (e) {
+      _error = 'Error fetching enemies: $e';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+  
+  Future<void> fetchEnemyById(int id) async {
+    _isLoading = true;
+    _error = '';
+    notifyListeners();
 
-  void resetGame() {
-    _enemy = EnemyModel(name: 'Monstre', totalLife: 100, level: 1);
-    _lastDamage = 0;
-    _monstersKilled = 0;
+    try {
+      EnemyModel? fetchedEnemy = await _enemyRequest.getEnemyById(id);
+      if (fetchedEnemy != null) {
+        _enemy = fetchedEnemy;
+        // Mettre à jour la vie de l'ennemi en fonction du niveau
+        _enemy.totalLife = _calculateTotalLife();
+        _enemy.currentLife = _enemy.totalLife;
+
+      } else {
+        _error = 'Enemy not found';
+      }
+      
+    } catch (e) {
+      _error = 'Error fetching enemy: $e';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+    
+    void removeCoins(int amount) {
+    _coins -= amount; // Retirer des pièces
     notifyListeners();
   }
+  
+  // lib/viewmodels/game_viewmodel.dart
+  void updateDps(int newDps) {
+    _damage += newDps;
+    notifyListeners();
+  }
+  
+  void updateCoinPerClick(int upgrade){
+    _coin_per_click+= upgrade;
+    notifyListeners();
+  }
+
+
 }

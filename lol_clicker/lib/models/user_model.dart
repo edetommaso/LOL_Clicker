@@ -5,7 +5,7 @@ class UserModel {
   final String lastname;
   final String firstname;
   final String birthdate;
-
+  
   // Constructeur classique
   UserModel({
     required this.id,
@@ -13,7 +13,7 @@ class UserModel {
     required this.firstname,
     required this.birthdate,
   });
-
+  
   /*
    * Un factory en Flutter est un constructeur particulier qui permet
    * de créer des objets en effectuant des traitements et
@@ -29,11 +29,12 @@ class UserModel {
       birthdate: json['birthdate'] ?? 'Date inconnue',
     );
   }
-
+  
   /*
    * Getter qui permet de récupérer l'âge d'une personne
    * à partir de sa date de naissance
    */
+
   int get age {
     try {
       DateTime birth = DateFormat('yyyy-MM-dd').parse(birthdate);

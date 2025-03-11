@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1deb5ubuntu1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Feb 17, 2025 at 11:28 PM
--- Server version: 8.0.41-0ubuntu0.22.04.1
--- PHP Version: 8.1.2-1ubuntu2.20
+-- Hôte : 127.0.0.1
+-- Généré le : dim. 09 mars 2025 à 16:30
+-- Version du serveur : 10.4.32-MariaDB
+-- Version de PHP : 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,203 +18,241 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `test`
+-- Base de données : `lol_clicker`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `buy`
+-- Structure de la table `buy`
 --
 
 CREATE TABLE `buy` (
-  `id_player` int NOT NULL,
-  `id_enhancement` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `id_player` int(11) NOT NULL,
+  `id_items` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `buy`
+-- Déchargement des données de la table `buy`
 --
 
-INSERT INTO `buy` (`id_player`, `id_enhancement`) VALUES
-(1, 1),
-(2, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Enemy`
+-- Structure de la table `enemy`
 --
 
-CREATE TABLE `Enemy` (
-  `level` int NOT NULL,
+CREATE TABLE `enemy` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `categorie` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `total_life` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `total_life` int(11) NOT NULL,
+  `experience` int(11) NOT NULL,
+  `image` varchar(500) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `Enemy`
+-- Déchargement des données de la table `enemy`
 --
 
-INSERT INTO `Enemy` (`level`, `name`, `total_life`) VALUES
-(1, 'blue slime', 10),
-(2, 'green slime', 20),
-(3, 'red slime', 30),
-(4, 'yellow slime', 40),
-(5, 'king slime', 50);
+INSERT INTO `enemy` (`categorie`, `name`, `total_life`, `experience`, `image`) VALUES
+(1, 'Carapateur', 15, 11, 'assets/carap.png'),
+(1, 'Baby Raptor', 20, 14, 'assets/braptor.png'),
+(2, 'Red Buff', 30, 18, 'assets/red.png'),
+(2, 'Grubs', 40, 22, 'assets/grubs.png'),
+(3, 'Captain Teemo', 100, 30, 'assets/teemo.png'),
+(1, 'Gromp', 40, 14, 'assets/gromp.png'),
+(2, 'Blue Buff', 40, 30, 'assets/blue.png'),
+(2, 'Raptor', 40, 22, 'assets/raptor.png'),
+(2, 'Blue Buff Upgraded', 80, 45, 'assets/blueU.png'),
+(3, 'Heimerdinger', 120 , 50, 'assets/heimer.png'),
+(3, 'Herald', 200, 50, 'assets/herald.png');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Enhancement`
+-- Structure de la table `items`
 --
 
-CREATE TABLE `Enhancement` (
-  `id_enhancement` int NOT NULL,
-  `experience_cost` int NOT NULL,
-  `boost_value` int NOT NULL,
-  `id_type` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `items` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(50) NOT NULL,
+  `description` VARCHAR(500) NOT NULL,
+  `price` INT(11) NOT NULL,
+  `image` VARCHAR(500) NOT NULL,
+  `id_type` INT(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `Enhancement`
+-- Déchargement des données de la table `items`
 --
 
-INSERT INTO `Enhancement` (`id_enhancement`, `experience_cost`, `boost_value`, `id_type`) VALUES
-(1, 0, 1, 1),
-(2, 50, 2, 1),
-(3, 0, 1, 2),
-(4, 50, 2, 2);
+INSERT INTO `items` (`name`, `description`, `price`, `image`, `id_type`) VALUES
+('Long Sword', 'DPC', 35, 'assets/items/LongSword.png', 1),
+('Caulfield`s Warhammer', 'DPC', 105, 'assets/items/warhammer.png', 1),
+('Last Whisper', 'DPC', 300, 'assets/items/whisper.png', 1),
+('B. F. Sword', 'DPC', 650, 'assets/items/BFSword.png', 1),
+('Kraken Slayer', 'DPC', 800, 'assets/items/kraken.png', 1),
+('Infinity Edge', 'DPC', 999, 'assets/items/infinity.png', 1),
+('The Collector', 'DPC', 1500, 'assets/items/collector.png', 1),
+('Ancient Coin', 'CPC', 300, 'assets/items/ancient.png', 2),
+('Gambler s Blade', 'CPC', 650, 'assets/items/gamblers.png', 2),
+('Zhonya s Hourglass', 'CPC', 800, 'assets/items/zhonyas.png', 2);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Player`
+-- Structure de la table `player`
 --
 
-CREATE TABLE `Player` (
-  `id_player` int NOT NULL,
+CREATE TABLE `player` (
+  `id_player` int(11) NOT NULL,
   `pseudo` varchar(50) NOT NULL,
-  `total_experience` int NOT NULL,
-  `id_ennemy` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `total_experience` int(11) NOT NULL,
+  `id_ennemy` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `Player`
+-- Déchargement des données de la table `player`
 --
 
-INSERT INTO `Player` (`id_player`, `pseudo`, `total_experience`, `id_ennemy`) VALUES
+INSERT INTO `player` (`id_player`, `pseudo`, `total_experience`, `id_ennemy`) VALUES
 (1, 'OmegaZell', 0, 1),
 (2, 'Sparadrap', 0, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Type_enhancement`
+-- Structure de la table `type_items`
 --
 
-CREATE TABLE `Type_enhancement` (
-  `id_type` int NOT NULL,
-  `name_type` varchar(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `type_items` (
+  `id_type` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `Type_enhancement`
+-- Déchargement des données de la table `type_items`
 --
 
-INSERT INTO `Type_enhancement` (`id_type`, `name_type`) VALUES
-(1, 'dps'),
-(2, 'exp');
+INSERT INTO `type_items` (`id_type`, `name`) VALUES
+(1, 'damage'),
+(2, 'experience');
+
+-- --------------------------------------------------------
 
 --
--- Indexes for dumped tables
+-- Structure de la table `users`
+--
+
+CREATE TABLE `users` (
+  `id_user` int(11) NOT NULL,
+  `firstname` varchar(50) NOT NULL,
+  `lastname` varchar(50) NOT NULL,
+  `birthdate` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`id_user`, `firstname`, `lastname`, `birthdate`) VALUES
+(4, 'Bob', 'Durand', '2020-01-15'),
+(5, 'Alice', 'Durand', '2021-05-29'),
+(7, 'Alain', 'Duvent', '1987-02-04'),
+(8, 'Aline', 'Duvent', '1987-05-04'),
+(11, 'Quentin', 'Chanraud', '1994-04-13');
+
+--
+-- Index pour les tables déchargées
 --
 
 --
--- Indexes for table `buy`
+-- Index pour la table `buy`
 --
+
 ALTER TABLE `buy`
-  ADD PRIMARY KEY (`id_player`,`id_enhancement`),
-  ADD KEY `buy_Enhancement0_FK` (`id_enhancement`);
+  ADD PRIMARY KEY (`id_player`, `id_items`),
+  ADD KEY `buy_Items0_FK` (`id_items`);
 
 --
--- Indexes for table `Enemy`
+-- Index pour la table `player`
 --
-ALTER TABLE `Enemy`
-  ADD PRIMARY KEY (`level`);
 
---
--- Indexes for table `Enhancement`
---
-ALTER TABLE `Enhancement`
-  ADD PRIMARY KEY (`id_enhancement`),
-  ADD KEY `Enhancement_Type_enhancement_FK` (`id_type`);
-
---
--- Indexes for table `Player`
---
-ALTER TABLE `Player`
+ALTER TABLE `player`
   ADD PRIMARY KEY (`id_player`),
-  ADD KEY `Player_Level_ennemy_FK` (`id_ennemy`);
+  ADD KEY `Player_id_ennemy_FK` (`id_ennemy`);
 
 --
--- Indexes for table `Type_enhancement`
---
-ALTER TABLE `Type_enhancement`
-  ADD PRIMARY KEY (`id_type`);
-
---
--- AUTO_INCREMENT for dumped tables
+-- Index pour la table `users`
 --
 
---
--- AUTO_INCREMENT for table `Enemy`
---
-ALTER TABLE `Enemy`
-  MODIFY `level` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id_user`);
 
 --
--- AUTO_INCREMENT for table `Enhancement`
---
-ALTER TABLE `Enhancement`
-  MODIFY `id_enhancement` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `Player`
---
-ALTER TABLE `Player`
-  MODIFY `id_player` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `Type_enhancement`
---
-ALTER TABLE `Type_enhancement`
-  MODIFY `id_type` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- Constraints for dumped tables
+-- AUTO_INCREMENT pour les tables déchargées
 --
 
 --
--- Constraints for table `buy`
+-- AUTO_INCREMENT pour la table `player`
 --
+
+ALTER TABLE `player`
+  MODIFY `id_player` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT pour la table `users`
+--
+
+ALTER TABLE `users`
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `items`
+--
+
+ALTER TABLE `items`
+  ADD CONSTRAINT `items_typeItems_FK` FOREIGN KEY (`id_type`) REFERENCES `type_items` (`id_type`);
+
+--
+-- Contraintes pour la table `buy`
+--
+
 ALTER TABLE `buy`
-  ADD CONSTRAINT `buy_Enhancement0_FK` FOREIGN KEY (`id_enhancement`) REFERENCES `Enhancement` (`id_enhancement`),
-  ADD CONSTRAINT `buy_Player_FK` FOREIGN KEY (`id_player`) REFERENCES `Player` (`id_player`);
+  ADD CONSTRAINT `buy_Items0_FK` FOREIGN KEY (`id_items`) REFERENCES `items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `buy_Player_FK` FOREIGN KEY (`id_player`) REFERENCES `player` (`id_player`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints for table `Enhancement`
---
-ALTER TABLE `Enhancement`
-  ADD CONSTRAINT `Enhancement_Type_enhancement_FK` FOREIGN KEY (`id_type`) REFERENCES `Type_enhancement` (`id_type`);
 
---
--- Constraints for table `Player`
---
-ALTER TABLE `Player`
-  ADD CONSTRAINT `Player_Level_ennemy_FK` FOREIGN KEY (`id_ennemy`) REFERENCES `Enemy` (`level`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+CREATE TABLE helpers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price INT NOT NULL,
+    image VARCHAR(255),
+    dps INT NOT NULL
+);
+
+-- Insertions triées par prix croissant, uniquement des champions LoL
+INSERT INTO helpers (name, description, price, image, dps) VALUES
+('Ashe', 'L’archère de givre tire des flèches précises.', 250, 'assets/helpers/ashe.png', 1),
+('Garen', 'Un guerrier robuste avec son épée tournoyante.', 400, 'assets/helpers/garen.png', 2),
+('Lux', 'Une mage lumineuse lançant des éclairs.', 600, 'assets/helpers/lux.png', 3),
+('Darius', 'Le bourreau de Noxus tranche ses ennemis.', 900, 'assets/helpers/darius.png', 4),
+('Ahri', 'La renarde charmeuse inflige des dégâts magiques.', 1200, 'assets/helpers/ahri.png', 5),
+('Yasuo', 'Le samouraï du vent coupe tout sur son passage.', 1600, 'assets/helpers/yasuo.png', 6),
+('Akali', 'La ninja furtive frappe dans l’ombre.', 2000, 'assets/helpers/akali.png', 7),
+('Thresh', 'Le gardien des chaînes torture ses proies.', 2500, 'assets/helpers/thresh.png', 8),
+('Jinx', 'L’artilleuse folle mitraille sans relâche.', 3000, 'assets/helpers/jinx.png', 10),
+('Zed', 'Le maître des ombres assassine en silence.', 4000, 'assets/helpers/zed.png', 12);

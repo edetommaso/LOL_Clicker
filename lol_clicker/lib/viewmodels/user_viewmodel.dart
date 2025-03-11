@@ -6,40 +6,41 @@ class UserViewModel extends ChangeNotifier {
   List<UserModel> _users = [];
   bool _isLoading = false;
   String _error = '';
-
   List<UserModel> get users => _users;
-
+  
   // La variable isLoading nous permet de mettre un état de chargement de nos données en attendant qu'elles s'affichent.
   bool get isLoading => _isLoading;
   String get errorMessage => _error;
 
   List<UserModel> _filteredUsers = [];
   List<UserModel> get filteredUsers => _filteredUsers;
-
+  
   /*---------------------*/
   /* Lectures de données */
   /*---------------------*/
+
+
   Future<void> fetchUsers() async {
     _isLoading = true;
     _error = '';
     notifyListeners();
-
+    
     try {
       _users = await _userRequest.getUsers();
       _filteredUsers = List.from(_users);
     } catch (e) {
       _error = e.toString();
     }
-
+    
     _isLoading = false;
     notifyListeners();
   }
-
+  
   Future<void> fetchUserById(int id) async {
     _isLoading = true;
     _error = '';
     notifyListeners();
-
+    
     try {
       _users = await _userRequest.getUserById(id) as List<UserModel>;
     } catch (e) {
@@ -60,7 +61,7 @@ class UserViewModel extends ChangeNotifier {
     } catch (e) {
       _error = e.toString();
     }
-
+    
     _isLoading = false;
     notifyListeners();
   }
